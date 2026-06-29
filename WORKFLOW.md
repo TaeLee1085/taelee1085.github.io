@@ -22,12 +22,13 @@ front and center), teaching, and CV. Hugo + PaperMod, deployed to GitHub Pages a
 
 Status keys: ⬜ todo · 🔄 in progress · ✅ done
 
-### Phase 0 — Scaffold  🔄
-- [ ] Hugo site + PaperMod submodule + `hugo.yml` (profile mode)
-- [ ] Reuse static assets (photo, favicons, CV/JMP placeholders)
-- [ ] GitHub Pages deploy workflow
-- [ ] Drawer 2: `CLAUDE.md`, this `WORKFLOW.md`, recipe skills, reviewer agent
-- [ ] Create `taelee1085.github.io` repo, push, enable Pages, confirm live
+### Phase 0 — Scaffold  ✅
+- [x] Hugo site + PaperMod submodule + `hugo.yml` (profile mode)
+- [x] Static assets: favicons kept; old photo/CV/JMP removed as outdated (2026-06-29)
+- [x] GitHub Pages deploy workflow
+- [x] Drawer 2: `CLAUDE.md`, this `WORKFLOW.md`, recipe skills, reviewer agent
+- [x] Create `taelee1085.github.io` repo, push, enable Pages, confirm live —
+  live at https://taelee1085.github.io/ (Pages build type = GitHub Actions)
 
 ### Phase 1 — Home / Profile  ⬜
 - [ ] Photo + one-line intro + research fields + link buttons (CV, Email, Scholar, ORCID)
@@ -47,6 +48,8 @@ Status keys: ⬜ todo · 🔄 in progress · ✅ done
 
 ### Phase 5 — Polish  ⬜
 - [ ] SEO/meta, favicon check, responsive + accessibility pass
+- [ ] Register site in Google Search Console + submit `sitemap.xml` (get it on Google)
+- [ ] Design pass (accent color / fonts / layout — currently stock PaperMod)
 - [ ] (optional) Custom domain (e.g. `kyungtaelee.com`) via CNAME
 
 ## 4. How We Work (dev workflow)
@@ -70,7 +73,11 @@ Status keys: ⬜ todo · 🔄 in progress · ✅ done
 
 ## 6. Open Questions
 
-- Is the reused `cv.pdf` / `jmp.pdf` current, or should the user supply new ones? (Phase 2/3)
-- Confirm Google Scholar URL to add as a social icon (was commented out in the old config).
+- **Bio/subtitle text** is still the OLD copy ("Ph.D. candidate … energy/environmental,
+  applied econometrics, development") — user wants to rewrite it later (Phase 1).
+- **Photo + CV PDF**: old ones were removed as outdated; user to supply current files
+  (photo → profile `imageUrl`; CV → `/update-cv`, which re-adds the CV menu/button).
+- **Email** `klee5@gradcenter.cuny.edu` — carried over from old config; confirm it's current.
+- **ORCID** `0009-0009-4661-9638` — confirmed correct by user 2026-06-29. ✓
+- Google Scholar URL to add as a social icon (was commented out in the old config).
 - Custom domain — wanted for the job market, or stay on github.io? (Phase 5)
-- The reused `static/jmp.pdf` is a placeholder; when the job market paper is added via `/new-paper`, use it as the starting source (or replace it) and place the final PDF under `static/papers/`.
