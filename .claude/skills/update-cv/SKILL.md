@@ -41,5 +41,7 @@ Swaps in a new CV PDF and verifies it's correctly linked, enforcing this project
 
    ```bash
    git add static/cv.pdf
-   git commit -m "Update CV PDF"
+   git commit -m "Update CV PDF
+
+   Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
    ```

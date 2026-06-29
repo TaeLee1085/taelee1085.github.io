@@ -22,7 +22,7 @@ front and center), teaching, and CV. Hugo + PaperMod, deployed to GitHub Pages a
 
 Status keys: ⬜ todo · 🔄 in progress · ✅ done
 
-### Phase 0 — Scaffold  ⬜
+### Phase 0 — Scaffold  🔄
 - [ ] Hugo site + PaperMod submodule + `hugo.yml` (profile mode)
 - [ ] Reuse static assets (photo, favicons, CV/JMP placeholders)
 - [ ] GitHub Pages deploy workflow
@@ -73,3 +73,4 @@ Status keys: ⬜ todo · 🔄 in progress · ✅ done
 - Is the reused `cv.pdf` / `jmp.pdf` current, or should the user supply new ones? (Phase 2/3)
 - Confirm Google Scholar URL to add as a social icon (was commented out in the old config).
 - Custom domain — wanted for the job market, or stay on github.io? (Phase 5)
+- The reused `static/jmp.pdf` is a placeholder; when the job market paper is added via `/new-paper`, use it as the starting source (or replace it) and place the final PDF under `static/papers/`.

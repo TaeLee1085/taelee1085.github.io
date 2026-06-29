@@ -62,7 +62,7 @@ rules (see `CLAUDE.md`).
    <abstract, if provided>
    ```
 
-5. If status is `jmp`, ensure the home/Research framing labels it "Job Market Paper".
+5. If status is `jmp`, ensure the home/Research framing labels it "Job Market Paper". Note: PaperMod has no status-aware list/single layout, so rendering `params.status`/`params.authors` nicely will need a custom `layouts/papers/` template — use `brainstorming → writing-plans` before building that (don't hand-hack it inline).
 
 6. Build to verify: `hugo --gc --minify` → exits 0, no broken-ref warnings.
 
