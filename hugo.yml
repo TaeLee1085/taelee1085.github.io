@@ -1,0 +1,69 @@
+baseURL: "https://taelee1085.github.io/"
+languageCode: "en-us"
+title: "Kyungtae Lee"
+theme: "PaperMod"
+
+enableInlineShortcodes: true
+enableRobotsTXT: true
+pagination:
+  pagerSize: 20
+
+taxonomies:
+  tag: tags
+
+minify:
+  disableXML: true
+
+menu:
+  main:
+    - name: Research
+      url: papers/
+      weight: 1
+    - name: Teaching
+      url: teaching/
+      weight: 2
+    - name: CV
+      url: cv.pdf
+      weight: 3
+
+params:
+  description: "Kyungtae (Tae) Lee — Ph.D. candidate in Economics at CUNY Graduate Center. Energy and environmental economics, applied econometrics. CV, research, and teaching."
+  author: "Kyungtae (Tae) Lee"
+  DateFormat: "January 2006"
+  defaultTheme: light
+  disableThemeToggle: true
+  hideFooter: false
+  ShowShareButtons: false
+  ShowReadingTime: false
+  ShowPostNavLinks: false
+  ShowBreadCrumbs: false
+  ShowCodeCopyButtons: false
+  ShowToc: false
+  disableScrollToTop: true
+  comments: false
+  math: true
+  profileMode:
+    enabled: true
+    title: "Kyungtae Lee"
+    subtitle: "I am a Ph.D. candidate in Economics at CUNY Graduate Center. My fields are energy and environmental economics, applied econometrics, and development economics."
+    imageUrl: "picture.jpeg"
+    imageTitle: "Kyungtae Lee"
+    imageWidth: 160
+    imageHeight: 160
+    buttons:
+      - name: Research
+        url: papers/
+      - name: Teaching
+        url: teaching/
+      - name: CV
+        url: cv.pdf
+  socialIcons:
+    - name: email
+      url: "mailto:klee5@gradcenter.cuny.edu"
+    - name: orcid
+      url: "https://orcid.org/0009-0009-4661-9638"
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
