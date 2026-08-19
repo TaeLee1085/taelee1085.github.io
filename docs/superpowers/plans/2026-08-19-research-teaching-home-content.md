@@ -25,9 +25,27 @@
 
 Hugo has no test runner. The equivalent of a failing test here is a build whose *output* is asserted: a `grep` against the generated HTML in `public/`. Several of this project's real failure modes — a suppressed page that still emits a file, a dead internal link, a group heading with nothing under it — all leave `hugo` exiting 0. Asserting on output is the only thing that catches them, so every task ends with an output assertion, not just a green build.
 
-Two build flags matter throughout:
+Three build facts matter throughout, all three verified against this repo on 2026-08-19:
+
 - `--cacheDir "$TMPDIR/hugocache"` — without it `--gc` fails in this sandbox on the default cache directory.
 - `rm -rf public` before a verification build — `--gc` does **not** delete stale files, so an orphaned page from an earlier build will still be sitting there and will make a "no per-paper pages" assertion pass or fail for the wrong reason.
+- **`--minify` strips quotes from HTML attributes.** `class="paper"` is emitted as `class=paper`. Every assertion in this plan greps for quoted attributes, so **assertions run against an unminified build**:
+
+  ```bash
+  rm -rf public
+  hugo --cacheDir "$TMPDIR/hugocache"      # assertions read this output
+  ```
+
+  and the minified build is then run separately as the shippable-build gate:
+
+  ```bash
+  rm -rf public
+  hugo --gc --minify --cacheDir "$TMPDIR/hugocache"   # must exit 0
+  ```
+
+  Both are sub-second on this site. Never grep a minified page for a quoted attribute — it will silently match nothing and the assertion will look like a content failure.
+
+One more output fact: PaperMod renders menu links through `absLangURL`, so a nav href is the **full** `https://taelee1085.github.io/research/`, not `/research/`. Any link check must normalise that prefix (Task 7 does).
 
 ---
 
@@ -216,13 +234,21 @@ No Google Scholar icon and no job-market statement — both were declined by the
 
 ```bash
 rm -rf public
-hugo --gc --minify --cacheDir "$TMPDIR/hugocache"
+hugo --cacheDir "$TMPDIR/hugocache"
 grep -c 'profile_inner' public/index.html
 grep -o 'href="[^"]*kyungtae-lee-cv.pdf"' public/index.html | head -3
 grep -o '<img[^>]*profile[^>]*>' public/index.html | head -2
 ```
 
-Expected: build exits 0; `profile_inner` count is 1 (profile mode is intact); the CV link appears (nav + button); an `<img>` referencing a processed `profile` image is present.
+Expected: build exits 0; `profile_inner` count is 1 (profile mode is intact); the CV link appears twice (nav + profile button); an `<img>` referencing a processed `profile` image is present.
+
+Then confirm the shippable build also passes:
+
+```bash
+rm -rf public
+hugo --gc --minify --cacheDir "$TMPDIR/hugocache"
+echo "exit: $?"
+```
 
 - [ ] **Step 3: Assert the CV file actually exists at the URL that links to it**
 
@@ -449,7 +475,7 @@ Every block is guarded by `with`, so the JMP emits no author line, the working p
 
 ```bash
 rm -rf public
-hugo --gc --minify --cacheDir "$TMPDIR/hugocache"
+hugo --cacheDir "$TMPDIR/hugocache"        # unminified: attribute quotes survive
 
 echo "--- groups present and in order ---"
 grep -o '<h2 class="research-group">[^<]*</h2>' public/research/index.html
@@ -477,6 +503,12 @@ grep -o '<h3 class="paper-title">[^<]*Carbon Pricing[^<]*</h3>' public/research/
 ```
 
 Expected: exactly the four group headings in the order Job Market Paper, Publications, Working Papers, Work in Progress; `6` articles; `ok: none` for stray directories and RSS; `ok` for the section page; both linked assets present; Carbon Pricing's title inside the `h3` with no anchor.
+
+Then confirm the shippable build:
+
+```bash
+rm -rf public && hugo --gc --minify --cacheDir "$TMPDIR/hugocache" && echo "minified build ok"
+```
 
 - [ ] **Step 8: Confirm the home page survived the new template**
 
@@ -681,7 +713,7 @@ No evaluation scores appear anywhere. The site owner asked for them to be left o
   <h2 class="teaching-institution">{{ $inst }}</h2>
   <ul class="teaching-list">
       {{- range $e := . }}
-    <li>{{ $e.Params.role }}, {{ $e.Title }}<span class="teaching-terms"> &mdash; {{ $e.Params.terms }}</span></li>
+    <li class="teaching-entry">{{ $e.Params.role }}, {{ $e.Title }}<span class="teaching-terms"> &mdash; {{ $e.Params.terms }}</span></li>
       {{- end }}
   </ul>
     {{- end }}
@@ -694,13 +726,13 @@ No evaluation scores appear anywhere. The site owner asked for them to be left o
 
 ```bash
 rm -rf public
-hugo --gc --minify --cacheDir "$TMPDIR/hugocache"
+hugo --cacheDir "$TMPDIR/hugocache"        # unminified: attribute quotes survive
 
 echo "--- institutions in order ---"
 grep -o '<h2 class="teaching-institution">[^<]*</h2>' public/teaching/index.html
 
 echo "--- nine entries ---"
-grep -c '<li>' public/teaching/index.html
+grep -c '<li class="teaching-entry">' public/teaching/index.html
 
 echo "--- no stray pages or RSS ---"
 find public/teaching -mindepth 1 -type d | grep -v '^$' && echo "STRAY PAGES" || echo "ok: none"
@@ -714,6 +746,14 @@ grep -c 'profile_inner' public/index.html
 ```
 
 Expected: six institution headings in the listed order; `9` list items; `ok: none` three times; `1` for profile mode.
+
+The entry count greps `<li class="teaching-entry">` rather than bare `<li>` on purpose: PaperMod's own nav emits ten `<li>` elements per page, so a bare count would read 19 and mean nothing. Do not "simplify" this grep.
+
+Then confirm the shippable build:
+
+```bash
+rm -rf public && hugo --gc --minify --cacheDir "$TMPDIR/hugocache" && echo "minified build ok"
+```
 
 - [ ] **Step 8: Commit**
 
@@ -804,11 +844,11 @@ The filename must sort after the theme's own files: extended CSS is concatenated
 
 ```bash
 rm -rf public
-hugo --gc --minify --cacheDir "$TMPDIR/hugocache"
-grep -rl 'paper-presentations' public/assets/css/ 2>/dev/null || grep -rl 'paper-presentations' public/ --include='*.css'
+hugo --cacheDir "$TMPDIR/hugocache"
+grep -rl 'paper-presentations' public/assets/css/
 ```
 
-Expected: at least one generated stylesheet contains the rule. If nothing matches, the file is in the wrong directory — it must be `assets/css/extended/`, at the repo root, not under `themes/`.
+Expected: at least one generated stylesheet path is printed. PaperMod concatenates every `assets/css/extended/*.css` into a single hashed stylesheet under `public/assets/css/`. If nothing matches, the file is in the wrong directory — it must be `assets/css/extended/` at the **repo root**, not under `themes/`, and the glob is single-level so a subdirectory would be silently ignored.
 
 - [ ] **Step 3: Check the pages at phone width and desktop width**
 
@@ -905,25 +945,55 @@ hugo --gc --minify --cacheDir "$TMPDIR/hugocache"
 echo "exit: $?"
 ```
 
-Expected: exit 0, no ERROR or WARN lines about missing refs or templates.
+Expected: exit 0, no ERROR or WARN lines about missing refs or templates. This is the shippable build; Step 2 rebuilds unminified for the link assertion.
 
 - [ ] **Step 2: Assert every internal link resolves to a real file**
 
-Hugo does not error on a link to a file that does not exist, so this must be checked directly.
+Hugo does not error on a link to a file that does not exist, so this must be checked directly. Three href forms appear on these pages and all three must be handled: full absolute URLs from the nav (`https://taelee1085.github.io/research/`, produced by `absLangURL`), root-relative paths, and bare relative paths from the profile buttons (`research/`). A shell one-liner that only looks for `href="/` silently skips the entire nav.
+
+Run the assertion build first so attribute quotes are present:
 
 ```bash
-grep -ho 'href="/[^"]*"' public/research/index.html public/teaching/index.html public/index.html \
-  | sed 's/href="//; s/"//' | sort -u \
-  | while read -r u; do
-      case "$u" in
-        */) p="public${u}index.html" ;;
-        *)  p="public${u}" ;;
-      esac
-      test -e "$p" && echo "ok   $u" || echo "DEAD $u"
-    done
+rm -rf public
+hugo --cacheDir "$TMPDIR/hugocache"
+python3 - <<'PY'
+import os, re, sys
+from urllib.parse import urljoin, urlparse
+
+BASE = "https://taelee1085.github.io/"
+pages = ["index.html", "research/index.html", "teaching/index.html"]
+dead, checked = [], set()
+
+for page in pages:
+    path = os.path.join("public", page)
+    html = open(path, encoding="utf-8").read()
+    page_url = urljoin(BASE, os.path.dirname(page) + "/" if os.path.dirname(page) else "")
+    for href in re.findall(r'href="([^"]+)"', html):
+        if href.startswith(("mailto:", "tel:", "#", "data:")):
+            continue
+        absu = urljoin(page_url, href)
+        p = urlparse(absu)
+        if p.netloc and p.netloc != urlparse(BASE).netloc:
+            continue                                   # external site, not ours to verify
+        target = p.path
+        local = "public" + (target + "index.html" if target.endswith("/") else target)
+        key = (page, target)
+        if key in checked:
+            continue
+        checked.add(key)
+        if not os.path.exists(local):
+            dead.append(f"{page}: {href} -> {local}")
+
+print(f"checked {len(checked)} internal links across {len(pages)} pages")
+for d in dead:
+    print("DEAD", d)
+sys.exit(1 if dead else 0)
+PY
 ```
 
-Expected: every line starts with `ok`. Any `DEAD` line is a broken link that the build did not catch.
+Expected: exit 0 and no `DEAD` lines.
+
+**One pre-existing exception is known and expected.** PaperMod's head partial always emits `<link rel="mask-icon" href=".../safari-pinned-tab.svg">`, and this site has never had that file. It predates this plan, it affects only Safari's pinned-tab icon, and inventing an SVG logo is a design decision that is not this plan's to make. If `safari-pinned-tab.svg` is the only `DEAD` line, record it in the ledger and continue. Any other `DEAD` line is a real defect introduced by this work and must be fixed.
 
 - [ ] **Step 3: Assert the private manuscript never entered the build or the repo**
 
