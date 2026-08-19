@@ -457,8 +457,10 @@ The whole body is wrapped in `post-content md-content` so that PaperMod's own `.
         {{- end }}
         {{- if and $p.Params.venue $p.Params.year }}
           {{- $bits = $bits | append (printf "<em>%s</em>, %v" $p.Params.venue $p.Params.year) }}
-        {{- else with $p.Params.venue }}
-          {{- $bits = $bits | append (printf "<em>%s</em>" .) }}
+        {{- else }}
+          {{- with $p.Params.venue }}
+            {{- $bits = $bits | append (printf "<em>%s</em>" .) }}
+          {{- end }}
         {{- end }}
         {{- with $bits }}
     <p class="paper-meta">{{ delimit . " &middot; " | safeHTML }}</p>
