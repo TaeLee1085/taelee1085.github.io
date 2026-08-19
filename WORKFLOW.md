@@ -1,7 +1,7 @@
 # Personal Academic Website — Workflow
 
 > **Living document.** Revise as the project evolves — update phase status, move items,
-> record decisions in the Decision Log. Last updated: 2026-06-29.
+> record decisions in the Decision Log. Last updated: 2026-08-19.
 
 ## 1. Vision
 
@@ -30,21 +30,27 @@ Status keys: ⬜ todo · 🔄 in progress · ✅ done
 - [x] Create `taelee1085.github.io` repo, push, enable Pages, confirm live —
   live at https://taelee1085.github.io/ (Pages build type = GitHub Actions)
 
-### Phase 1 — Home / Profile  ⬜
-- [ ] Photo + one-line intro + research fields + link buttons (CV, Email, Scholar, ORCID)
-- [ ] Confirm subtitle/bio copy with the user
+### Phase 1 — Home / Profile  ✅
+- [x] Photo + bio + research-field sentence + link buttons (Research, Teaching, CV)
+- [x] Icons: email, ORCID (Google Scholar icon declined by the user — see Decision Log)
+- [ ] Bio copy is still the original wording; user has not rewritten it yet (see Open
+  Questions)
 
-### Phase 2 — Research  ⬜
-- [ ] Research list page; JMP highlighted at the top
-- [ ] Working papers, then work in progress (publications if any)
-- [ ] Each entry: title, authors, year, abstract, PDF/link, status (use `/new-paper`)
+### Phase 2 — Research  ✅
+- [x] Research list page at `/research/`; JMP in its own group at the top
+- [x] Four groups in order: Job Market Paper → Publications → Working Papers → Work in
+  Progress; six papers total (use `/new-paper` for future additions)
+- [x] Each entry: title (linked or plain), coauthors, venue/year, abstract, presentations —
+  all conditional, nothing empty rendered
 
-### Phase 3 — CV  ⬜
-- [ ] Confirm/replace `static/cv.pdf` with the current CV (use `/update-cv`)
-- [ ] Prominent CV link from home (web CV version optional)
+### Phase 3 — CV  ✅
+- [x] `static/kyungtae-lee-cv.pdf` is current (August 2026) (use `/update-cv` for updates)
+- [x] CV linked from the nav and as a one-click home-page button
 
-### Phase 4 — Teaching  ⬜
-- [ ] Teaching/TA experience, evaluations, course-material links (use `/new-teaching`)
+### Phase 4 — Teaching  ✅
+- [x] Teaching page at `/teaching/`, grouped by institution, most recent first; nine
+  entries across six institutions (use `/new-teaching` for future additions)
+- [x] Evaluation scores deliberately omitted (D7); no materials links yet
 
 ### Phase 5 — Polish  ⬜
 - [ ] SEO/meta, favicon check, responsive + accessibility pass
@@ -70,14 +76,23 @@ Status keys: ⬜ todo · 🔄 in progress · ✅ done
 | 2026-06-29 | Light theme only, no dark mode | Clean academic look |
 | 2026-06-29 | Balanced workflow: CLAUDE.md + WORKFLOW.md + 3 recipe skills + 1 combined reviewer | Right-sized for a static site; one reviewer with academic + web lenses |
 | 2026-06-29 | Keep account `TaeLee1085` (no rename/new account); custom domain deferred to Phase 5 | `taelee` username taken; domain is the proper fix later and needs no site change |
+| 2026-08-19 | Research lives at **`/research/`**, not `/papers/` | Matches the nav label; permanent once the URL is circulated, so chosen deliberately now |
+| 2026-08-19 | Teaching evaluations are **not published** | The one 5.00/5.00 score came from a single respondent, so the number is not meaningful and invites awkward questions; course history still ships |
+| 2026-08-19 | `private-manuscripts/` holds unreleased coauthored work, stays git-ignored | `External_Validity_in_Practice_20260819.pdf` (WIP source) must never enter the build or git history; verified clean at Task 7 |
 
 ## 6. Open Questions
 
 - **Bio/subtitle text** is still the OLD copy ("Ph.D. candidate … energy/environmental,
-  applied econometrics, development") — user wants to rewrite it later (Phase 1).
-- **Photo + CV PDF**: old ones were removed as outdated; user to supply current files
-  (photo → profile `imageUrl`; CV → `/update-cv`, which re-adds the CV menu/button).
-- **Email** `klee5@gradcenter.cuny.edu` — carried over from old config; confirm it's current.
+  applied econometrics, development") — user has not rewritten it yet; still outstanding.
+- **Photo + CV PDF**: supplied and live — `static/profile.jpg` (cropped/downscaled square)
+  and `static/kyungtae-lee-cv.pdf` (August 2026). ✓
+- **Email** `klee5@gradcenter.cuny.edu` — carried over from old config; matches the email
+  in the JMP PDF footer, but has not been explicitly reconfirmed by the user as current.
 - **ORCID** `0009-0009-4661-9638` — confirmed correct by user 2026-06-29. ✓
-- Google Scholar URL to add as a social icon (was commented out in the old config).
+- **Google Scholar icon** — declined by the user (2026-08-19); not added.
+- **Job-market-cycle statement** on the home page — declined by the user (2026-08-19); not
+  added.
+- **The abstract for "From One LATE to Another"** — outstanding; the user will add it after
+  the paper is finalised in September 2026 (title, coauthor, and presentations ship now;
+  see D10 in the design spec).
 - Custom domain — wanted for the job market, or stay on github.io? (Phase 5)
