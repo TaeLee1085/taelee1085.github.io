@@ -5,3 +5,6 @@ resources/_gen/
 .hugo_build.lock
 node_modules/
 .superpowers/
+
+# Manuscripts not yet cleared for public release — never commit, never deploy
+private-manuscripts/
