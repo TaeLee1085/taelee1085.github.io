@@ -1,0 +1,50 @@
+{{- define "main" }}
+<header class="page-header">
+  <h1>{{ .Title }}</h1>
+</header>
+
+<div class="post-content md-content">
+  {{- .Content -}}
+
+  {{- $groups := slice
+      (dict "key" "jmp"       "label" "Job Market Paper")
+      (dict "key" "published" "label" "Publications")
+      (dict "key" "working"   "label" "Working Papers")
+      (dict "key" "wip"       "label" "Work in Progress")
+  -}}
+
+  {{- range $g := $groups }}
+    {{- $entries := sort (where $.RegularPages "Params.status" $g.key) "Weight" }}
+    {{- with $entries }}
+  <h2 class="research-group">{{ $g.label }}</h2>
+      {{- range $p := . }}
+  <article class="paper">
+    <h3 class="paper-title">
+      {{- with $p.Params.link }}<a href="{{ . }}">{{ $p.Title }}</a>{{ else }}{{ $p.Title }}{{ end -}}
+    </h3>
+        {{- $bits := slice }}
+        {{- with $p.Params.coauthors }}
+          {{- $bits = $bits | append (printf "with %s" (delimit . ", " " and ")) }}
+        {{- end }}
+        {{- if and $p.Params.venue $p.Params.year }}
+          {{- $bits = $bits | append (printf "<em>%s</em>, %v" $p.Params.venue $p.Params.year) }}
+        {{- else }}
+          {{- with $p.Params.venue }}
+            {{- $bits = $bits | append (printf "<em>%s</em>" .) }}
+          {{- end }}
+        {{- end }}
+        {{- with $bits }}
+    <p class="paper-meta">{{ delimit . " &middot; " | safeHTML }}</p>
+        {{- end }}
+        {{- with $p.Content }}
+    <div class="paper-abstract">{{ . }}</div>
+        {{- end }}
+        {{- with $p.Params.presentations }}
+    <p class="paper-presentations"><span class="paper-label">Presented at:</span> {{ delimit . " &middot; " | safeHTML }}</p>
+        {{- end }}
+  </article>
+      {{- end }}
+    {{- end }}
+  {{- end }}
+</div>
+{{- end }}
