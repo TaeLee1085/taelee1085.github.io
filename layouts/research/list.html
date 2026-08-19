@@ -6,6 +6,7 @@
 <div class="post-content md-content">
   {{- .Content -}}
 
+  {{/* A status absent from this list renders nothing for that group, with no error. */}}
   {{- $groups := slice
       (dict "key" "jmp"       "label" "Job Market Paper")
       (dict "key" "published" "label" "Publications")

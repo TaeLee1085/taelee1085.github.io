@@ -6,6 +6,7 @@
 <div class="post-content md-content">
   {{- .Content -}}
 
+  {{/* An institution absent from this list renders nothing for its entries, with no error. */}}
   {{- $institutions := slice
       "Brooklyn College"
       "Baruch College"
