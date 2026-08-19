@@ -1,0 +1,30 @@
+{{- define "main" }}
+<header class="page-header">
+  <h1>{{ .Title }}</h1>
+</header>
+
+<div class="post-content md-content">
+  {{- .Content -}}
+
+  {{- $institutions := slice
+      "Brooklyn College"
+      "Baruch College"
+      "The City College of New York"
+      "The Graduate Center, CUNY"
+      "Hunter College"
+      "New York University"
+  -}}
+
+  {{- range $inst := $institutions }}
+    {{- $entries := sort (where $.RegularPages "Params.institution" $inst) "Weight" }}
+    {{- with $entries }}
+  <h2 class="teaching-institution">{{ $inst }}</h2>
+  <ul class="teaching-list">
+      {{- range $e := . }}
+    <li class="teaching-entry">{{ $e.Params.role }}, {{ $e.Title }}<span class="teaching-terms"> &mdash; {{ $e.Params.terms }}</span></li>
+      {{- end }}
+  </ul>
+    {{- end }}
+  {{- end }}
+</div>
+{{- end }}
