@@ -236,9 +236,17 @@ No Google Scholar icon and no job-market statement — both were declined by the
 rm -rf public
 hugo --cacheDir "$TMPDIR/hugocache"
 grep -c 'profile_inner' public/index.html
-grep -o 'href="[^"]*kyungtae-lee-cv.pdf"' public/index.html | head -3
-grep -o '<img[^>]*profile[^>]*>' public/index.html | head -2
+grep -c 'kyungtae-lee-cv.pdf' public/index.html
+python3 -c "
+import re, glob
+h = open('public/index.html', encoding='utf-8').read()
+m = re.search(r'<img[^>]*profile[^>]*>', h, re.S)   # re.S: PaperMod wraps the tag across lines
+print('img tag:', m.group(0) if m else 'NOT FOUND')
+print('processed file:', glob.glob('public/profile*'))
+"
 ```
+
+The image check must be multiline-aware: PaperMod's `index_profile.html` breaks the `<img>` tag before its `height`/`width` attributes, so a line-oriented `grep` for `<img...profile...>` matches nothing even when the tag is perfectly correct.
 
 Expected: build exits 0; `profile_inner` count is 1 (profile mode is intact); the CV link appears twice (nav + profile button); an `<img>` referencing a processed `profile` image is present.
 
