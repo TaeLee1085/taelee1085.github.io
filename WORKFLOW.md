@@ -84,8 +84,10 @@ Status keys: ⬜ todo · 🔄 in progress · ✅ done
 
 - **Bio/subtitle text** is still the OLD copy ("Ph.D. candidate … energy/environmental,
   applied econometrics, development") — user has not rewritten it yet; still outstanding.
-- **Photo + CV PDF**: supplied and live — `static/profile.jpg` (cropped/downscaled square)
-  and `static/kyungtae-lee-cv.pdf` (August 2026). ✓
+- **Photo + CV PDF**: supplied and live — `assets/profile.jpg` (cropped/downscaled square;
+  lives in `assets/`, not `static/`, because `hugo.yml`'s `profileMode.imageUrl` resolves
+  through PaperMod's `resources.Get`, which reads from the assets pipeline that does the
+  resizing — do not move it to `static/`) and `static/kyungtae-lee-cv.pdf` (August 2026). ✓
 - **Email** `klee5@gradcenter.cuny.edu` — carried over from old config; matches the email
   in the JMP PDF footer, but has not been explicitly reconfirmed by the user as current.
 - **ORCID** `0009-0009-4661-9638` — confirmed correct by user 2026-06-29. ✓
