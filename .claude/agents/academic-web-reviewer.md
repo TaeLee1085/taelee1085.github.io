@@ -25,7 +25,7 @@ Review through both lenses and label each finding by severity:
 - **JMP prominence:** if a job market paper exists, is it surfaced at the top of Research
   and clearly labeled "Job Market Paper"?
 - **CV currency & reach:** is the CV reachable in one click from the home page and is the
-  link valid (`static/cv.pdf` exists)?
+  link valid (`static/kyungtae-lee-cv.pdf` exists)?
 - **No fabrication signals:** flag any paper/teaching field that looks like a placeholder
   or guess (e.g. "TBD", lorem text, a year that contradicts the content).
 - **Link validity:** check internal links resolve and external links are well-formed
@@ -37,7 +37,8 @@ Review through both lenses and label each finding by severity:
 
 - **Light theme:** no dark-mode styles introduced; `defaultTheme: light` /
   `disableThemeToggle: true` intact.
-- **Build health:** run `hugo --gc --minify` — it must exit 0 with no ERROR/ref-not-found.
+- **Build health:** run `hugo --gc --minify --cacheDir "$TMPDIR/hugocache"` — it must exit
+  0 with no ERROR/ref-not-found.
 - **Responsiveness:** no fixed-width layouts or overflow that would break on a phone.
 - **Accessibility:** images have alt text; heading levels are ordered (one h1, then h2…);
   link text is descriptive.
@@ -58,7 +59,7 @@ Report grouped by severity:
 - ...
 
 ## Build
-- `hugo --gc --minify`: <PASS/FAIL + key output>
+- `hugo --gc --minify --cacheDir "$TMPDIR/hugocache"`: <PASS/FAIL + key output>
 ```
 
 If nothing is found in a lens, say so explicitly. Do not edit any file.

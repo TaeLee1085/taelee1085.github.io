@@ -33,8 +33,6 @@ Status keys: ⬜ todo · 🔄 in progress · ✅ done
 ### Phase 1 — Home / Profile  ✅
 - [x] Photo + bio + research-field sentence + link buttons (Research, Teaching, CV)
 - [x] Icons: email, ORCID (Google Scholar icon declined by the user — see Decision Log)
-- [ ] Bio copy is still the original wording; user has not rewritten it yet (see Open
-  Questions)
 
 ### Phase 2 — Research  ✅
 - [x] Research list page at `/research/`; JMP in its own group at the top
@@ -57,6 +55,18 @@ Status keys: ⬜ todo · 🔄 in progress · ✅ done
 - [ ] Register site in Google Search Console + submit `sitemap.xml` (get it on Google)
 - [ ] Design pass (accent color / fonts / layout — currently stock PaperMod)
 - [ ] (optional) Custom domain (e.g. `kyungtaelee.com`) via CNAME
+- [ ] A responsive/visual pass at 375px was never performed — the sandbox used to build
+  this branch could bind neither a dev-server port nor open `file://` pages, so mobile
+  rendering remains unverified. Do this on a real device after deploy.
+- [ ] Full bio rewrite (see Open Questions — the subtitle wording was updated to match
+  the owner's Google Sites "About me" text, but a complete rewrite is still pending)
+- [ ] The empty `/tags/` page currently enters `sitemap.xml` because `hugo.yml` declares
+  a `tag` taxonomy that no content uses. **Verified fix:** add
+  `disableKinds: ["taxonomy","term","rss"]` to `hugo.yml` — confirmed in a scratch build
+  to drop `/tags/` from both `public/` and `sitemap.xml` with no other change. **Do not**
+  "fix" this by simply deleting the `taxonomies:` block instead — verified in the same
+  scratch build that doing so restores Hugo's default taxonomies (tag *and* category) and
+  produces an empty `/categories/` page in addition to `/tags/`, which is worse.
 
 ## 4. How We Work (dev workflow)
 
@@ -79,11 +89,14 @@ Status keys: ⬜ todo · 🔄 in progress · ✅ done
 | 2026-08-19 | Research lives at **`/research/`**, not `/papers/` | Matches the nav label; permanent once the URL is circulated, so chosen deliberately now |
 | 2026-08-19 | Teaching evaluations are **not published** | The one 5.00/5.00 score came from a single respondent, so the number is not meaningful and invites awkward questions; course history still ships |
 | 2026-08-19 | `private-manuscripts/` holds unreleased coauthored work, stays git-ignored | `External_Validity_in_Practice_20260819.pdf` (WIP source) must never enter the build or git history; verified clean at Task 7 |
+| 2026-08-19 | `/kyungtae-lee-cv.pdf`, `/kyungtae-lee-jmp.pdf`, and `/from-one-late-to-another-poster.pdf` are permanent URLs | Already circulated (CV link, JMP link, poster link); once shared they must never be renamed |
 
 ## 6. Open Questions
 
-- **Bio/subtitle text** is still the OLD copy ("Ph.D. candidate … energy/environmental,
-  applied econometrics, development") — user has not rewritten it yet; still outstanding.
+- **Bio/subtitle text** was updated in this branch (`hugo.yml` `profileMode.subtitle`:
+  "My fields are…" → "My primary fields of interest are…") so the wording now matches
+  the owner's Google Sites "About me" text; a full rewrite of the bio is still pending
+  and remains outstanding.
 - **Photo + CV PDF**: supplied and live — `assets/profile.jpg` (cropped/downscaled square;
   lives in `assets/`, not `static/`, because `hugo.yml`'s `profileMode.imageUrl` resolves
   through PaperMod's `resources.Get`, which reads from the assets pipeline that does the

@@ -22,10 +22,17 @@ file for it, not building new layout.
 1. **Course title** (exact) — becomes the front-matter `title`.
 2. **Role** — e.g. "Instructor", "Adjunct Instructor", "Teaching Assistant".
 3. **Institution** — must match, character-for-character, one of the entries in the
-   `$institutions` slice in `layouts/teaching/list.html` (currently: Brooklyn College,
-   Baruch College, The City College of New York, The Graduate Center, CUNY, Hunter
-   College, New York University). See Step 3 — this is the single most likely way to
-   silently lose a teaching entry.
+   `$institutions` slice in `layouts/teaching/list.html` (currently, in order):
+   - Brooklyn College
+   - Baruch College
+   - The City College of New York
+   - The Graduate Center, CUNY
+   - Hunter College
+   - New York University
+
+   Note the third-from-last entry contains a comma of its own — match it exactly,
+   comma included. See Step 3 — this is the single most likely way to silently lose a
+   teaching entry.
 4. **Term(s)** — e.g. "Fall 2025", or a range like "Spring 2025 – Spring 2026" (existing
    entries use an en dash "–", not a hyphen, for ranges).
 
@@ -35,7 +42,13 @@ Step 4 for why.
 ## Steps
 
 1. Choose a slug: `content/teaching/<slug>.md`. Existing convention is
-   `<year>-<term>-<institution-abbrev>-<short-course>.md`, e.g.
+   `<year>-[term-][institution-abbrev-]<short-course>.md` — year, then an optional term
+   segment, then an optional institution-abbreviation segment, then a short course slug.
+   Either optional segment may be dropped in an existing filename: the term is omitted
+   for entries spanning multiple terms (e.g. `2022-ccny-intermediate-macro.md`,
+   `2025-baruch-intro-micro.md`), and the institution abbreviation is omitted in some
+   single-term entries too (e.g. `2026-spring-financial-economics.md`,
+   `2026-spring-intro-business-statistics.md`). A slug using every segment looks like
    `2025-fall-ccny-principles-micro.md`. The slug has no effect on ordering or rendering
    — keep the convention for maintainability, not correctness.
 
@@ -58,8 +71,11 @@ Step 4 for why.
    City College entries); it cannot move an entry to a different institution or reorder
    the institutions themselves. Institution order on the page is fixed by the
    `$institutions` slice in `layouts/teaching/list.html`. If `weight` is accidentally
-   nested under `params:`, Hugo's `.Weight` silently stays `0`, which sorts the entry
-   last within its institution — no build error, no warning.
+   nested under `params:`, Hugo's `.Weight` silently stays `0`. The template sorts each
+   institution's list ascending with the generic `sort … "Weight"` (not Hugo's
+   `ByWeight`), so a `0` sorts **first**, not last — the mis-weighted entry jumps to the
+   top of its institution's list, ahead of every correctly weighted entry. No build
+   error, no warning.
 
    **If the institution is new to the site**, adding the content file alone is not
    enough: `layouts/teaching/list.html` only renders institutions in its

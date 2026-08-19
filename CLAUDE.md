@@ -61,7 +61,7 @@ fix CRITICAL/WARNING items. Run `/reload-plugins` after adding new agents or ski
 
 - dev server: `hugo server -D`
 - build: `hugo --gc --minify`
-- new content: `hugo new content papers/<slug>.md` (prefer the `/new-paper` skill)
+- new content: `hugo new content research/<slug>.md` (prefer the `/new-paper` skill)
 
 ## Two drawers (where things live)
 

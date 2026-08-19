@@ -2,8 +2,12 @@
    Both render inside .md-content, so links, heading sizes and list spacing
    already come from the theme. Only rhythm and de-emphasis are added here. */
 
-.research-group,
-.teaching-institution {
+/* Qualified with their element (h2/h3) to reach specificity 0-1-1, tying the theme's
+   own .md-content h2 / .md-content h3,h4,h5,h6 rules (also 0-1-1) — the tie is broken by
+   source order, and this stylesheet is concatenated after the theme's, so these win. An
+   unqualified .research-group etc. (0-1-0) would lose outright and be dead weight. */
+h2.research-group,
+h2.teaching-institution {
     margin-top: 40px;
 }
 
@@ -11,16 +15,24 @@
     margin-bottom: 32px;
 }
 
-.paper-title {
+h3.paper-title {
     margin-bottom: 6px;
 }
 
+/* margin-bottom intentionally omitted below: these are <p> elements inside
+   .md-content, so the theme's `.md-content p:not(:last-child) { margin-bottom: … }`
+   (specificity 0-2-1) always outranks a same-element-qualified rule here (max
+   reachable is 0-1-1 for .paper-meta/.paper-presentations, 0-1-2 for
+   .paper-abstract p) — there is no clean qualification that wins without stacking
+   selectors purely to inflate specificity. A margin-bottom value here would be dead
+   weight, so it's left out rather than shipped as a rule that lies. Only margin-top
+   is uncontested and applies as written. */
 .paper-meta,
 .paper-presentations {
     color: var(--secondary);
     font-size: 15px;
     line-height: 1.5;
-    margin: 6px 0;
+    margin-top: 6px;
 }
 
 .paper-label {
@@ -28,7 +40,7 @@
 }
 
 .paper-abstract p {
-    margin: 8px 0;
+    margin-top: 8px;
 }
 
 .teaching-list {
@@ -44,8 +56,8 @@
    media query adds no specificity, so an unqualified rule here would beat
    the theme's mobile rules at every width. */
 @media (max-width: 768px) {
-    .research-group,
-    .teaching-institution {
+    h2.research-group,
+    h2.teaching-institution {
         margin-top: 32px;
     }
 

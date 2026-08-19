@@ -25,8 +25,12 @@ it, not building new layout.
 
 1. **Title** (exact) — becomes the front-matter `title`.
 2. **Status** — one of `jmp`, `published`, `working`, `wip`. Determines which group on
-   `/research/` the entry appears in (see `layouts/research/list.html`).
-3. **Year** — optional. Only renders in the byline if `venue` is also set (see Step 4
+   `/research/` the entry appears in (see `layouts/research/list.html`). **Only these
+   four values render anything.** `layouts/research/list.html` filters by exact match
+   against a fixed `$groups` slice, so any other value — e.g. `forthcoming`, a completely
+   natural thing to write for an R&R — builds clean, exits 0, emits no warning, and the
+   paper simply does not appear anywhere on the page.
+3. **Year** — optional. Only renders in the byline if `venue` is also set (see Step 5
    below), so it's meaningful mainly for `published` entries.
 4. **Coauthors** — a list of names, in the order they should appear, **excluding
    Kyungtae Lee**. Omit the key entirely for a solo paper.
@@ -76,8 +80,12 @@ it, not building new layout.
    groups themselves. Group order is fixed by the `$groups` slice in
    `layouts/research/list.html` (currently jmp → published → working → wip) — don't try
    to change it by editing weights. If `weight` is accidentally nested under `params:`,
-   Hugo's `.Weight` silently stays `0`, which sorts the entry last within its group —
-   no build error, no warning.
+   Hugo's `.Weight` silently stays `0`. The template sorts each group ascending with the
+   generic `sort … "Weight"` (not Hugo's `ByWeight`), so a `0` sorts **first**, not
+   last — the mis-weighted entry jumps to the top of its group, ahead of every correctly
+   weighted entry including the flagship one. No build error, no warning. (Verified
+   empirically: a test entry with `weight` nested under `params:` rendered above both
+   existing Working Papers entries.)
 
 5. `year` renders in the byline only when `venue` is also set — the template pairs them
    as "*Venue*, Year" and drops `year` entirely if `venue` is empty. This is why the JMP
@@ -96,7 +104,12 @@ it, not building new layout.
    Confirm `public/research/<slug>/` was **not** created as its own directory (individual
    research pages are `build.render: never` via `content/research/_index.md`'s cascade —
    they only ever appear inlined into `/research/`, never at their own URL). If a `link`
-   points at a local file, confirm that file exists under `public/`.
+   points at a local file, confirm that file exists under `public/`. Then also:
+   `rm -rf public`, build **unminified**
+   (`hugo --cacheDir "$TMPDIR/hugocache"`), and
+   `grep -q "<exact title>" public/research/index.html`, failing loudly if absent —
+   because a `status:` value outside `jmp|published|working|wip` builds clean with zero
+   errors while silently rendering nothing (see Step 2).
 
 8. Run the `academic-web-reviewer` agent on the change; fix CRITICAL/WARNING items.
 

@@ -21,17 +21,25 @@ Swaps in a new CV PDF and verifies it's correctly linked, enforcing this project
 
 ## Steps
 
-1. Copy the user's new PDF to `static/cv.pdf` (overwrite). Keep the filename `cv.pdf` so
-   existing links (`hugo.yml` menu + profile button → `cv.pdf`) stay valid.
+1. Copy the user's new PDF to `static/kyungtae-lee-cv.pdf` (overwrite). Keep the filename
+   `kyungtae-lee-cv.pdf` so existing links (`hugo.yml` menu + profile button →
+   `kyungtae-lee-cv.pdf`) stay valid.
 
    ```bash
-   cp "<user's new cv path>" static/cv.pdf
+   cp "<user's new cv path>" static/kyungtae-lee-cv.pdf
    ```
 
 2. Confirm the home page links to it: `hugo.yml` `menu.main` CV entry and the profile
-   `buttons` CV entry both point to `cv.pdf`. If missing, add them.
+   `buttons` CV entry both point to `kyungtae-lee-cv.pdf`. If missing, add them.
 
-3. Build to verify: `hugo --gc --minify` → exits 0.
+3. Build to verify: `rm -rf public && hugo --gc --minify --cacheDir "$TMPDIR/hugocache"` →
+   exits 0. Then assert all three, failing loudly if any don't hold:
+
+   ```bash
+   test -f static/kyungtae-lee-cv.pdf || echo "MISSING: static/kyungtae-lee-cv.pdf"
+   test -f public/kyungtae-lee-cv.pdf || echo "MISSING: public/kyungtae-lee-cv.pdf"
+   test -f static/cv.pdf && echo "ORPHAN: static/cv.pdf should not exist"
+   ```
 
 4. Serve (`hugo server -D`), open the home page, click **CV**, confirm the new PDF opens.
 
@@ -40,8 +48,6 @@ Swaps in a new CV PDF and verifies it's correctly linked, enforcing this project
 6. Commit once approved:
 
    ```bash
-   git add static/cv.pdf
-   git commit -m "Update CV PDF
-
-   Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
+   git add static/kyungtae-lee-cv.pdf
+   git commit -m "Update CV PDF"
    ```
