@@ -1,0 +1,55 @@
+/* Research and Teaching list pages.
+   Both render inside .md-content, so links, heading sizes and list spacing
+   already come from the theme. Only rhythm and de-emphasis are added here. */
+
+.research-group,
+.teaching-institution {
+    margin-top: 40px;
+}
+
+.paper {
+    margin-bottom: 32px;
+}
+
+.paper-title {
+    margin-bottom: 6px;
+}
+
+.paper-meta,
+.paper-presentations {
+    color: var(--secondary);
+    font-size: 15px;
+    line-height: 1.5;
+    margin: 6px 0;
+}
+
+.paper-label {
+    font-weight: 600;
+}
+
+.paper-abstract p {
+    margin: 8px 0;
+}
+
+.teaching-list {
+    margin-top: 8px;
+}
+
+.teaching-terms {
+    color: var(--secondary);
+}
+
+/* Mobile overrides MUST live inside their own media query.
+   Extended CSS is concatenated after the theme's own media queries, and a
+   media query adds no specificity, so an unqualified rule here would beat
+   the theme's mobile rules at every width. */
+@media (max-width: 768px) {
+    .research-group,
+    .teaching-institution {
+        margin-top: 32px;
+    }
+
+    .paper {
+        margin-bottom: 26px;
+    }
+}
