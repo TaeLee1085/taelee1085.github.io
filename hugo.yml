@@ -11,6 +11,11 @@ pagination:
 taxonomies:
   tag: tags
 
+# The tag taxonomy is declared above but no content uses it, so Hugo would emit an
+# empty /tags/ page into sitemap.xml. Disabling the kinds suppresses it without
+# restoring Hugo's default taxonomies (which would add an empty /categories/ too).
+disableKinds: ["taxonomy", "term", "rss"]
+
 minify:
   disableXML: true
 

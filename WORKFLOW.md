@@ -1,7 +1,7 @@
 # Personal Academic Website — Workflow
 
 > **Living document.** Revise as the project evolves — update phase status, move items,
-> record decisions in the Decision Log. Last updated: 2026-08-19.
+> record decisions in the Decision Log. Last updated: 2026-08-26.
 
 ## 1. Vision
 
@@ -60,13 +60,12 @@ Status keys: ⬜ todo · 🔄 in progress · ✅ done
   rendering remains unverified. Do this on a real device after deploy.
 - [ ] Full bio rewrite (see Open Questions — the subtitle wording was updated to match
   the owner's Google Sites "About me" text, but a complete rewrite is still pending)
-- [ ] The empty `/tags/` page currently enters `sitemap.xml` because `hugo.yml` declares
-  a `tag` taxonomy that no content uses. **Verified fix:** add
-  `disableKinds: ["taxonomy","term","rss"]` to `hugo.yml` — confirmed in a scratch build
-  to drop `/tags/` from both `public/` and `sitemap.xml` with no other change. **Do not**
-  "fix" this by simply deleting the `taxonomies:` block instead — verified in the same
-  scratch build that doing so restores Hugo's default taxonomies (tag *and* category) and
-  produces an empty `/categories/` page in addition to `/tags/`, which is worse.
+- [x] The empty `/tags/` page no longer enters `sitemap.xml`. Fixed 2026-08-26 by adding
+  `disableKinds: ["taxonomy", "term", "rss"]` to `hugo.yml`; a clean rebuild now emits
+  6 pages instead of 9, no `public/tags/`, and a sitemap of exactly `/`, `/research/`,
+  `/teaching/`. **Do not** "fix" this instead by deleting the `taxonomies:` block — that
+  restores Hugo's default taxonomies (tag *and* category) and adds an empty
+  `/categories/` page on top of `/tags/`, which is worse.
 
 ## 4. How We Work (dev workflow)
 
