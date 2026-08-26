@@ -51,7 +51,17 @@ Status keys: ⬜ todo · 🔄 in progress · ✅ done
 - [x] Evaluation scores deliberately omitted (D7); no materials links yet
 
 ### Phase 5 — Polish  ⬜
-- [ ] SEO/meta, favicon check, responsive + accessibility pass
+- [x] SEO/meta audited 2026-08-26 — the built `<head>` carries description, author,
+  canonical, `robots: index, follow`, OpenGraph and Twitter-card tags, all four favicon
+  sizes, and `robots.txt` points at `sitemap.xml`. No `og:image` is emitted, so link
+  previews on Slack/X show no thumbnail; fold that into the design pass if wanted.
+- [ ] favicon: the current icon is a **plain rounded square with no mark** (no initials,
+  nothing identifying). Deferred to the design pass by the user on 2026-08-26.
+- [ ] `/safari-pinned-tab.svg` is referenced by PaperMod's stock `head.html` on every
+  page but the file does not exist, so every page fires one 404. Verified 2026-08-26 as
+  the site's **only** broken internal reference. Deferred to the design pass; fix by
+  adding the SVG (not by forking `head.html`, which would mean maintaining a theme copy).
+- [ ] responsive + accessibility pass
 - [ ] Register site in Google Search Console + submit `sitemap.xml` (get it on Google)
 - [ ] Design pass (accent color / fonts / layout — currently stock PaperMod)
 - [ ] (optional) Custom domain (e.g. `kyungtaelee.com`) via CNAME
@@ -89,6 +99,8 @@ Status keys: ⬜ todo · 🔄 in progress · ✅ done
 | 2026-08-19 | Teaching evaluations are **not published** | The one 5.00/5.00 score came from a single respondent, so the number is not meaningful and invites awkward questions; course history still ships |
 | 2026-08-19 | `private-manuscripts/` holds unreleased coauthored work, stays git-ignored | `External_Validity_in_Practice_20260819.pdf` (WIP source) must never enter the build or git history; verified clean at Task 7 |
 | 2026-08-19 | `/kyungtae-lee-cv.pdf`, `/kyungtae-lee-jmp.pdf`, and `/from-one-late-to-another-poster.pdf` are permanent URLs | Already circulated (CV link, JMP link, poster link); once shared they must never be renamed |
+| 2026-08-26 | Deployed with the **current** CV rather than waiting for the user's three CV corrections | The three circulated PDF URLs (CV, JMP, poster) were verified returning **404 on the live site** — the links already in circulation were broken right then. Shipping today fixes all three; the CV's three known errors (stale paper title in Conference Presentations, "365 Fifth AVenue", the Quantitative Methods for Economics teaching-field line) get overwritten at the same URL later via `/update-cv`. |
+| 2026-08-26 | favicon left as the stock plain rounded square; `/safari-pinned-tab.svg` 404 left in place | Both are cosmetic and belong to the Phase 5 design pass, where the accent color and any "KL" monogram get decided together rather than piecemeal. The missing mask-icon only affects Safari pinned tabs. |
 
 ## 6. Open Questions
 
