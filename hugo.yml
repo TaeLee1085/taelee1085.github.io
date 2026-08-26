@@ -49,12 +49,12 @@ params:
   math: true
   profileMode:
     enabled: true
-    title: "Kyungtae Lee"
+    title: "Kyungtae (Tae) Lee"
     subtitle: "I am a Ph.D. candidate in Economics at CUNY Graduate Center. My primary fields of interest are energy and environmental economics. I am also interested in applied econometrics and development economics."
     imageUrl: "profile.jpg"
     imageWidth: 160
     imageHeight: 160
-    imageTitle: "Kyungtae Lee"
+    imageTitle: "Kyungtae (Tae) Lee"
     buttons:
       - name: Research
         url: research/
