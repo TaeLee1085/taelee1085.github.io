@@ -62,7 +62,25 @@ Status keys: ⬜ todo · 🔄 in progress · ✅ done
   the site's **only** broken internal reference. Deferred to the design pass; fix by
   adding the SVG (not by forking `head.html`, which would mean maintaining a theme copy).
 - [ ] responsive + accessibility pass
-- [ ] Register site in Google Search Console + submit `sitemap.xml` (get it on Google)
+- [ ] **Get the site on Google.** Audited 2026-08-26, the day it went live. Findings:
+  - `site:taelee1085.github.io` returns **nothing** — not indexed yet. Expected for a
+    hours-old site; nothing is blocking it. Live `robots.txt` allows all crawlers and
+    points at `sitemap.xml`; every page carries `robots: index, follow`.
+  - **An outdated Google Sites page ranks first** for "Kyungtae Lee economics CUNY":
+    `https://sites.google.com/view/taelee/home`, titled "Kyungtae (Tae) Lee's personal
+    website", with Home/CV/Research/Teaching tabs. It has **no job market paper**, no
+    paper links, and no link here. So a search committee googling the owner today lands
+    on a JMP-less page while this site is invisible. Two competing personal sites also
+    split ranking signals. Decide: replace its content with an "I've moved →" pointer
+    (safest — old circulated links still funnel here), or delete it. Owner's Google
+    account, so the owner must do it.
+  - **Google Search Console** is the actual accelerator (not Analytics — Analytics has
+    zero effect on indexing). PaperMod already supports verification: put the code in
+    `params.analytics.google.SiteVerificationTag` and it emits the `<meta>` tag. Owner
+    fetches the code from Search Console, then we add it and submit the sitemap.
+  - **Google Analytics** is optional and purely for measurement. Hugo has it built in via
+    `services.googleAnalytics.ID` (the `google_analytics.html` partial is Hugo's own, not
+    PaperMod's); `privacy.googleAnalytics` holds the privacy knobs. One line if wanted.
 - [ ] Design pass (accent color / fonts / layout — currently stock PaperMod)
 - [ ] (optional) Custom domain (e.g. `kyungtaelee.com`) via CNAME
 - [ ] A responsive/visual pass at 375px was never performed — the sandbox used to build
