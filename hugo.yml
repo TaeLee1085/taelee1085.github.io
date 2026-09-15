@@ -67,6 +67,12 @@ params:
       url: "mailto:kyungtae.lee79@gc.cuny.edu"
     - name: orcid
       url: "https://orcid.org/0009-0009-4661-9638"
+  # Google Search Console ownership check (URL-prefix property https://taelee1085.github.io/,
+  # "HTML tag" method). PaperMod emits it as <meta name="google-site-verification"> on every
+  # page. Public by design, not a secret. Removing it un-verifies the property.
+  analytics:
+    google:
+      SiteVerificationTag: "75vop6L0a0jh-daF2CzpfVs4hfuJqMHnW_Eo1pnCUCI"
 
 markup:
   goldmark:

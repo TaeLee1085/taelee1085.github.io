@@ -78,6 +78,13 @@ Status keys: ⬜ todo · 🔄 in progress · ✅ done
     zero effect on indexing). PaperMod already supports verification: put the code in
     `params.analytics.google.SiteVerificationTag` and it emits the `<meta>` tag. Owner
     fetches the code from Search Console, then we add it and submit the sitemap.
+    **2026-09-14:** URL-prefix property `https://taelee1085.github.io/` created by the owner;
+    its HTML-tag code is now in `hugo.yml`. Owner's remaining steps: Verify, submit
+    `sitemap.xml`, Request indexing for `/`, `/research/`, `/teaching/`.
+  - **2026-09-14, old Google Site:** the owner plans to delete it. Recommended order:
+    replace its content with a "moved to taelee1085.github.io" link now, delete only once
+    `site:taelee1085.github.io` returns results, then use Google's Remove Outdated Content
+    tool if the old page lingers in results.
   - **Google Analytics** is optional and purely for measurement. Hugo has it built in via
     `services.googleAnalytics.ID` (the `google_analytics.html` partial is Hugo's own, not
     PaperMod's); `privacy.googleAnalytics` holds the privacy knobs. One line if wanted.
