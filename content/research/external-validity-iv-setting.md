@@ -4,7 +4,7 @@ weight: 10
 params:
   status: published
   year: 2025
-  coauthors: ["Alexander Kwon"]
+  coauthors: ['<a href="https://sites.google.com/view/alexanderkwon/home">Alexander Kwon</a>']
   venue: "Evaluation Review"
   link: "https://doi.org/10.1177/0193841X251342619"
   presentations:

@@ -3,7 +3,7 @@ title: "From One LATE to Another: Machine Learning and the External Validity of 
 weight: 10
 params:
   status: jmp
-  coauthors: ["Alexander Kwon"]
+  coauthors: ['<a href="https://sites.google.com/view/alexanderkwon/home">Alexander Kwon</a>']
   presentations:
     - "2027 ASSA Conference (poster)"
     - "2026 Africa Meeting of the Econometric Society"

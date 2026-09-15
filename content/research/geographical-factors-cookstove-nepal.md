@@ -4,7 +4,7 @@ weight: 20
 params:
   status: published
   year: 2025
-  coauthors: ["Alexander Kwon"]
+  coauthors: ['<a href="https://sites.google.com/view/alexanderkwon/home">Alexander Kwon</a>']
   venue: "Social Sciences & Humanities Open"
   link: "https://www.sciencedirect.com/science/article/pii/S2590291124004509"
 ---
