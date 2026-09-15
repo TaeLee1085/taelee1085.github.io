@@ -2,7 +2,7 @@
 title: "Clean Energy Access and Home Production Improvement: Labor Supply and Gender Difference"
 weight: 10
 params:
-  status: jmp
+  status: working
   year: 2025
   link: "/kyungtae-lee-jmp.pdf"
   presentations:

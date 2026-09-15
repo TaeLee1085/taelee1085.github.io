@@ -1,8 +1,8 @@
 ---
-title: "Principles of Statistics"
-weight: 30
+title: "Principles of Macroeconomics"
+weight: 10
 params:
   role: "Adjunct Instructor"
   institution: "The City College of New York"
-  terms: "Spring 2025"
+  terms: "Summer 2026"
 ---

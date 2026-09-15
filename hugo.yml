@@ -32,7 +32,7 @@ menu:
       weight: 3
 
 params:
-  description: "Kyungtae (Tae) Lee — Ph.D. candidate in Economics at CUNY Graduate Center. Energy and environmental economics, applied econometrics. CV, research, and teaching."
+  description: "Kyungtae (Tae) Lee, Economics Ph.D. candidate at CUNY Graduate Center. Econometrics, development, energy, and environmental economics. Research, teaching, CV."
   author: "Kyungtae (Tae) Lee"
   DateFormat: "January 2006"
   defaultTheme: light
@@ -50,7 +50,7 @@ params:
   profileMode:
     enabled: true
     title: "Kyungtae (Tae) Lee"
-    subtitle: "I am a Ph.D. candidate in Economics at CUNY Graduate Center. My primary fields of interest are energy and environmental economics. I am also interested in applied econometrics and development economics."
+    subtitle: "I am a Ph.D. candidate in Economics at CUNY Graduate Center. My research lies in econometrics, development economics, and energy and environmental economics."
     imageUrl: "profile.jpg"
     imageWidth: 160
     imageHeight: 160
@@ -64,7 +64,7 @@ params:
         url: kyungtae-lee-cv.pdf
   socialIcons:
     - name: email
-      url: "mailto:klee5@gradcenter.cuny.edu"
+      url: "mailto:kyungtae.lee79@gc.cuny.edu"
     - name: orcid
       url: "https://orcid.org/0009-0009-4661-9638"
 

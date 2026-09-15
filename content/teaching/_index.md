@@ -1,6 +1,6 @@
 ---
 title: "Teaching"
-description: "Teaching and teaching assistant experience of Kyungtae (Tae) Lee in economics and statistics at Brooklyn College, Baruch College, The City College of New York, the CUNY Graduate Center, Hunter College, and New York University."
+description: "Courses taught by Kyungtae (Tae) Lee at Brooklyn College, Baruch College, City College, CUNY Graduate Center, Hunter College, and NYU, plus a teaching platform."
 # Load-bearing build settings. Each was tested by deletion; every failure is SILENT
 # (build exits 0, no warning). Do not remove any of these without re-testing:
 #   outputs: ["html"]     Without it, an RSS index.xml reappears for this section, with
@@ -20,3 +20,9 @@ cascade:
       render: never
       list: local
 ---
+
+## Teaching Resources
+
+**[Interactive Economics Teaching Platform](https://econ-teaching-platform.vercel.app)** (2026 – present)
+
+I developed this platform for my microeconomics and econometrics courses. I use it for interactive lessons, attendance, and live quizzes.

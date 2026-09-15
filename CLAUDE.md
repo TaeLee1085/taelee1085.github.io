@@ -7,7 +7,7 @@
 ## What this is
 
 The personal academic website of **Kyungtae (Tae) Lee**, Ph.D. candidate in Economics at
-CUNY Graduate Center (energy & environmental economics, applied econometrics, development).
+CUNY Graduate Center (econometrics, development, energy & environmental economics).
 Its purpose is the **economics job market**: present profile, research (job market paper
 front and center), teaching, and CV. Built with **Hugo + PaperMod**, deployed to
 **GitHub Pages** at `https://taelee1085.github.io/`.

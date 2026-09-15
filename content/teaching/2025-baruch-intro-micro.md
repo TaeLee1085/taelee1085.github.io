@@ -4,5 +4,5 @@ weight: 10
 params:
   role: "Adjunct Instructor"
   institution: "Baruch College"
-  terms: "Spring 2025 – Spring 2026"
+  terms: "Spring 2025 – Fall 2026"
 ---

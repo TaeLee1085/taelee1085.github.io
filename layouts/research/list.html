@@ -41,7 +41,7 @@
     <div class="paper-abstract">{{ . }}</div>
         {{- end }}
         {{- with $p.Params.presentations }}
-    <p class="paper-presentations"><span class="paper-label">Presented at:</span> {{ delimit . " &middot; " | safeHTML }}</p>
+    <p class="paper-presentations"><span class="paper-label">Presentations:</span> {{ delimit . " &middot; " | safeHTML }}</p>
         {{- end }}
   </article>
       {{- end }}

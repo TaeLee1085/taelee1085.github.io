@@ -1,6 +1,6 @@
 ---
 title: "Research"
-description: "Research by Kyungtae (Tae) Lee: job market paper on clean energy access, labor supply, and gender differences in Nepal; published work on external validity in instrumental variable settings and on household cookstove choice; working papers on carbon pricing and clean energy access."
+description: "Kyungtae (Tae) Lee's research: a job market paper on machine learning and the external validity of IV estimates, plus work on clean energy and carbon pricing."
 # Load-bearing build settings. Each was tested by deletion; every failure is SILENT
 # (build exits 0, no warning). Do not remove any of these without re-testing:
 #   outputs: ["html"]     Without it, an RSS index.xml reappears for this section, with

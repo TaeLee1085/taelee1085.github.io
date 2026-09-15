@@ -1,6 +1,6 @@
 ---
 title: "Financial Economics"
-weight: 10
+weight: 30
 params:
   role: "Adjunct Instructor"
   institution: "Brooklyn College"

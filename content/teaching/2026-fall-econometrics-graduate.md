@@ -1,8 +1,8 @@
 ---
-title: "Intro Business Statistics"
-weight: 40
+title: "Econometrics (graduate course)"
+weight: 10
 params:
   role: "Adjunct Instructor"
   institution: "Brooklyn College"
-  terms: "Spring 2026"
+  terms: "Fall 2026"
 ---

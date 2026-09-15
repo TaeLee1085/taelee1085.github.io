@@ -1,6 +1,6 @@
 ---
 title: "Intermediate Macroeconomics"
-weight: 30
+weight: 40
 params:
   role: "Adjunct Instructor"
   institution: "The City College of New York"

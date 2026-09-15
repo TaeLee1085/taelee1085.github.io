@@ -1,7 +1,7 @@
 # Personal Academic Website — Workflow
 
 > **Living document.** Revise as the project evolves — update phase status, move items,
-> record decisions in the Decision Log. Last updated: 2026-08-26.
+> record decisions in the Decision Log. Last updated: 2026-09-14.
 
 ## 1. Vision
 
@@ -42,11 +42,11 @@ Status keys: ⬜ todo · 🔄 in progress · ✅ done
   all conditional, nothing empty rendered
 
 ### Phase 3 — CV  ✅
-- [x] `static/kyungtae-lee-cv.pdf` is current (August 2026) (use `/update-cv` for updates)
+- [x] `static/kyungtae-lee-cv.pdf` is current (September 2026) (use `/update-cv` for updates)
 - [x] CV linked from the nav and as a one-click home-page button
 
 ### Phase 4 — Teaching  ✅
-- [x] Teaching page at `/teaching/`, grouped by institution, most recent first; nine
+- [x] Teaching page at `/teaching/`, grouped by institution, most recent first; twelve
   entries across six institutions (use `/new-teaching` for future additions)
 - [x] Evaluation scores deliberately omitted (D7); no materials links yet
 
@@ -86,8 +86,8 @@ Status keys: ⬜ todo · 🔄 in progress · ✅ done
 - [ ] A responsive/visual pass at 375px was never performed — the sandbox used to build
   this branch could bind neither a dev-server port nor open `file://` pages, so mobile
   rendering remains unverified. Do this on a real device after deploy.
-- [ ] Full bio rewrite (see Open Questions — the subtitle wording was updated to match
-  the owner's Google Sites "About me" text, but a complete rewrite is still pending)
+- [ ] Full bio rewrite (see Open Questions — the subtitle was updated 2026-09-14 to match
+  the September 2026 CV's research interests, but a fuller rewrite is still pending)
 - [x] The empty `/tags/` page no longer enters `sitemap.xml`. Fixed 2026-08-26 by adding
   `disableKinds: ["taxonomy", "term", "rss"]` to `hugo.yml`; a clean rebuild now emits
   6 pages instead of 9, no `public/tags/`, and a sitemap of exactly `/`, `/research/`,
@@ -120,24 +120,27 @@ Status keys: ⬜ todo · 🔄 in progress · ✅ done
 | 2026-08-26 | Deployed with the **current** CV rather than waiting for the user's three CV corrections | The three circulated PDF URLs (CV, JMP, poster) were verified returning **404 on the live site** — the links already in circulation were broken right then. Shipping today fixes all three; the CV's three known errors (stale paper title in Conference Presentations, "365 Fifth AVenue", the Quantitative Methods for Economics teaching-field line) get overwritten at the same URL later via `/update-cv`. |
 | 2026-08-26 | favicon left as the stock plain rounded square; `/safari-pinned-tab.svg` 404 left in place | Both are cosmetic and belong to the Phase 5 design pass, where the accent color and any "KL" monogram get decided together rather than piecemeal. The missing mask-icon only affects Safari pinned tabs. |
 | 2026-08-26 | Home-page heading and photo alt read **"Kyungtae (Tae) Lee"**; the nav logo, browser tab, and `<title>` stay **"Kyungtae Lee"** | Tae is the owner's everyday nickname, so the hero is where a first-time visitor should learn what to call them. The CV PDF's header is plain "Kyungtae Lee", and the nav logo doubles as the tab title on every page, so those stay matched to the CV. Only `profileMode.title` and `profileMode.imageTitle` changed — **do not** also change `hugo.yml`'s top-level `title:` or `content/_index.md`'s `title:`, which is what would leak the nickname into the tab and every page's header. |
+| 2026-09-14 | JMP changed to **"From One LATE to Another"**, shipped **without a PDF link** for now. When the owner sends the PDF, `/kyungtae-lee-jmp.pdf` will serve **whichever paper is the current JMP**, and the former JMP's PDF moves to `/clean-energy-access-home-production.pdf`. Until then `/kyungtae-lee-jmp.pdf` still holds the Clean Energy paper, linked from Working Papers | The owner chose to publish the regrouped Research page before the PDF was ready. Anyone holding the circulated JMP link should eventually land on the current job market paper; the path stays permanent, only its content follows the JMP. The September 2026 CV PDF is the source for every change in this round (paper groups, coauthors, abstract, presentations, teaching, email). |
+| 2026-09-14 | Work in Progress entries carry **no abstract and no link**, matching the CV | Carbon Pricing (now with Jun Yoo only) and Accessibility (now with Nadia Doytch) moved from Working Papers to Work in Progress; the CV lists both without abstracts, and the old Accessibility abstract ("I examine…") and its SSRN link describe the earlier solo version. Restore either if the owner asks. |
+| 2026-09-14 | Research presentations label reads **"Presentations:"**, not "Presented at:" | The JMP lists the 2027 ASSA poster, which had not happened yet; "Presented at" would claim a talk that has not taken place. |
+| 2026-09-14 | Teaching Resources block (link to `econ-teaching-platform.vercel.app`) sits in `content/teaching/_index.md`'s body, above the course list | The teaching template already renders the section's `.Content` first, so no layout change was needed; the owner wanted visitors to find the platform. |
 
 ## 6. Open Questions
 
-- **Bio/subtitle text** was updated in this branch (`hugo.yml` `profileMode.subtitle`:
-  "My fields are…" → "My primary fields of interest are…") so the wording now matches
-  the owner's Google Sites "About me" text; a full rewrite of the bio is still pending
-  and remains outstanding.
+- **Bio/subtitle text** — on 2026-09-14 `hugo.yml` `profileMode.subtitle` became "My
+  research lies in econometrics, development economics, and energy and environmental
+  economics.", matching the September 2026 CV's research interests (owner approved). A
+  fuller bio rewrite is still optional and outstanding.
 - **Photo + CV PDF**: supplied and live — `assets/profile.jpg` (cropped/downscaled square;
   lives in `assets/`, not `static/`, because `hugo.yml`'s `profileMode.imageUrl` resolves
   through PaperMod's `resources.Get`, which reads from the assets pipeline that does the
-  resizing — do not move it to `static/`) and `static/kyungtae-lee-cv.pdf` (August 2026). ✓
-- **Email** `klee5@gradcenter.cuny.edu` — carried over from old config; matches the email
-  in the JMP PDF footer, but has not been explicitly reconfirmed by the user as current.
+  resizing — do not move it to `static/`) and `static/kyungtae-lee-cv.pdf` (September 2026). ✓
+- **Email** `kyungtae.lee79@gc.cuny.edu` — switched from `klee5@gradcenter.cuny.edu` on
+  2026-09-14 at the owner's request, matching the September 2026 CV. ✓
 - **ORCID** `0009-0009-4661-9638` — confirmed correct by user 2026-06-29. ✓
 - **Google Scholar icon** — declined by the user (2026-08-19); not added.
 - **Job-market-cycle statement** on the home page — declined by the user (2026-08-19); not
   added.
-- **The abstract for "From One LATE to Another"** — outstanding; the user will add it after
-  the paper is finalised in September 2026 (title, coauthor, and presentations ship now;
-  see D10 in the design spec).
+- **The abstract for "From One LATE to Another"** — added 2026-09-14 when the paper became
+  the JMP, copied verbatim from the September 2026 CV. ✓
 - Custom domain — wanted for the job market, or stay on github.io? (Phase 5)
