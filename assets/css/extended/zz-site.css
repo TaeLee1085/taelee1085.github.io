@@ -19,15 +19,17 @@ h3.paper-title {
     margin-bottom: 6px;
 }
 
-/* margin-bottom intentionally omitted below: these are <p> elements inside
-   .md-content, so the theme's `.md-content p:not(:last-child) { margin-bottom: … }`
-   (specificity 0-2-1) always outranks a same-element-qualified rule here (max
-   reachable is 0-1-1 for .paper-meta/.paper-presentations, 0-1-2 for
-   .paper-abstract p) — there is no clean qualification that wins without stacking
-   selectors purely to inflate specificity. A margin-bottom value here would be dead
-   weight, so it's left out rather than shipped as a rule that lies. Only margin-top
-   is uncontested and applies as written. */
+/* Inside a paper entry, vertical rhythm comes from margin-top alone. The theme's
+   `.md-content p:not(:last-child) { margin-bottom: var(--content-gap) }` (0-2-1)
+   would otherwise drop a full paragraph gap under the coauthor, note and
+   Presentations lines. `.md-content .paper > p` ties it at 0-2-1 and wins on source
+   order, the same tie the headings above rely on. */
+.md-content .paper > p {
+    margin-bottom: 0;
+}
+
 .paper-meta,
+.paper-note,
 .paper-presentations {
     color: var(--secondary);
     font-size: 15px;
@@ -35,11 +37,60 @@ h3.paper-title {
     margin-top: 6px;
 }
 
+.paper-note {
+    font-style: italic;
+}
+
 .paper-label {
     font-weight: 600;
 }
 
-.paper-abstract p {
+/* The abstract folds behind a "+ Abstract" toggle (native <details>, no JavaScript).
+   `details.paper-abstract > summary` (0-1-2) outranks the theme's `details summary`
+   (0-0-2), whose display: list-item would draw the browser's triangle marker. The
+   theme's details::details-content rules animate the open and close in Chromium;
+   Safari and Firefox open instantly, which is fine. The 8px vertical padding (with
+   no margin above) makes the toggle about 38px tall for thumbs, while the text sits
+   exactly where a 6px margin would put it. */
+.paper-abstract {
+    margin-top: 0;
+}
+
+details.paper-abstract > summary {
+    display: inline-block;
+    width: auto;
+    list-style: none;
+    padding-block: 8px;
+    color: var(--secondary);
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+details.paper-abstract > summary::-webkit-details-marker {
+    display: none;
+}
+
+details.paper-abstract > summary:hover {
+    color: var(--primary);
+}
+
+/* The sign is decoration. The `/ ""` alt text stops screen readers from saying
+   "plus" (they already announce expanded or collapsed); browsers without alt-text
+   support drop that declaration and keep the plain one before it. */
+details.paper-abstract > summary::before {
+    content: "+";
+    content: "+" / "";
+    display: inline-block;
+    width: 1em;
+}
+
+details.paper-abstract[open] > summary::before {
+    content: "\2212";
+    content: "\2212" / "";
+}
+
+.paper-abstract-body p {
     margin-top: 8px;
 }
 

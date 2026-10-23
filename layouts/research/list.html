@@ -37,11 +37,22 @@
         {{- with $bits }}
     <p class="paper-meta">{{ delimit . " &middot; " | safeHTML }}</p>
         {{- end }}
-        {{- with $p.Content }}
-    <div class="paper-abstract">{{ . }}</div>
+        {{- /* A short visible note, e.g. "Draft available upon request." Kept out of the
+               abstract body so it does not disappear when the abstract is folded. */}}
+        {{- with $p.Params.note }}
+    <p class="paper-note">{{ . }}</p>
         {{- end }}
         {{- with $p.Params.presentations }}
     <p class="paper-presentations"><span class="paper-label">Presentations:</span> {{ delimit . " &middot; " | safeHTML }}</p>
+        {{- end }}
+        {{- /* The abstract sits last and starts folded behind "+ Abstract". Native
+               <details>: no JavaScript, keyboard and screen-reader friendly, and the
+               text stays in the HTML for search engines. */}}
+        {{- with $p.Content }}
+    <details class="paper-abstract">
+      <summary>Abstract</summary>
+      <div class="paper-abstract-body">{{ . }}</div>
+    </details>
         {{- end }}
   </article>
       {{- end }}
