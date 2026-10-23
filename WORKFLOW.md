@@ -1,7 +1,7 @@
 # Personal Academic Website — Workflow
 
 > **Living document.** Revise as the project evolves — update phase status, move items,
-> record decisions in the Decision Log. Last updated: 2026-09-14.
+> record decisions in the Decision Log. Last updated: 2026-10-23.
 
 ## 1. Vision
 
@@ -133,6 +133,8 @@ Status keys: ⬜ todo · 🔄 in progress · ✅ done
 | 2026-09-14 | Coauthor **Alexander Kwon** links to `https://sites.google.com/view/alexanderkwon/home` on all three papers, written as an inline `<a>` tag inside `coauthors` | Owner request. The template already passes coauthor text through `safeHTML` (the same way presentations embed the poster link), so no layout change was needed. The `/new-paper` skill warns against raw `<` in coauthor names; that warning is about accidental markup, not this deliberate link — do not strip it. The `?authuser=0` suffix from the copied URL was dropped because it only selects a Google account; the page loads identically without it. |
 | 2026-09-14 | Home hero shows **"Email: kyungtae.lee79@gc.cuny.edu"** as visible text on its own line under the intro, in `profileMode.subtitle` | Search committees often copy the address, and the envelope icon only opens a desktop mail app. A labeled line reads cleaner than a "Contact me at…" sentence inside the bio, and a separate Contact banner would have meant forking PaperMod's `index_profile.html`. The `<br>` relies on goldmark `unsafe: true`, which the coauthor and poster links already need. The envelope icon stays. |
 | 2026-09-14 | Teaching Resources block (link to `econ-teaching-platform.vercel.app`) sits in `content/teaching/_index.md`'s body, above the course list | The teaching template already renders the section's `.Content` first, so no layout change was needed; the owner wanted visitors to find the platform. |
+| 2026-10-23 | The JMP PDF is live: `static/kyungtae-lee-jmp.pdf` now holds **"From One LATE to Another"** (Kwon and Lee, dated October 21, 2026), and the JMP title links to `/kyungtae-lee-jmp.pdf` | Completes the 2026-09-14 rule: the circulated JMP URL serves the current JMP. Source file: `Job_application/materials/Tae_Lee_JMP.pdf`, byte-identical to the paper repo's `main_Tae_20261016.pdf`. The owner first dropped the PDF into `public/`, which Hugo wipes on every build and which is git-ignored; files to serve go in `static/`. |
+| 2026-10-23 | The Clean Energy paper's **December 2025 PDF is off the site**: the Working Papers title is plain text and the abstract ends with "*Draft available upon request.*" The owner's Finder rename of that file to `/kyungtae-lee-workingpaper.pdf` was considered and dropped the same day, before any push | The owner judged the December 2025 draft not ready to circulate and plans to revise it and post the new draft as a working paper. The file was reachable at `/kyungtae-lee-jmp.pdf` from 2026-08-26 until this deploy and stays in git history (committed 2026-08-26); nothing on the site links to it now. When the revised draft arrives: `/new-paper` step 2 (place it under `static/`, add `link`, delete the note line). "Draft" rather than "Manuscript" because that is the usual word for an economics working paper; the owner can flip it. Supersedes the 2026-09-14 plan to move the file to `/clean-energy-access-home-production.pdf`. |
 
 ## 6. Open Questions
 
