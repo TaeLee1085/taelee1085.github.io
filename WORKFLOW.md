@@ -1,7 +1,7 @@
 # Personal Academic Website — Workflow
 
 > **Living document.** Revise as the project evolves — update phase status, move items,
-> record decisions in the Decision Log. Last updated: 2026-10-23.
+> record decisions in the Decision Log. Last updated: 2026-10-30.
 
 ## 1. Vision
 
@@ -42,7 +42,7 @@ Status keys: ⬜ todo · 🔄 in progress · ✅ done
   all conditional, nothing empty rendered
 
 ### Phase 3 — CV  ✅
-- [x] `static/kyungtae-lee-cv.pdf` is current (September 2026) (use `/update-cv` for updates)
+- [x] `static/kyungtae-lee-cv.pdf` is current (October 2026) (use `/update-cv` for updates)
 - [x] CV linked from the nav and as a one-click home-page button
 
 ### Phase 4 — Teaching  ✅
@@ -137,6 +137,8 @@ Status keys: ⬜ todo · 🔄 in progress · ✅ done
 | 2026-10-23 | The Clean Energy paper's **December 2025 PDF is off the site**: the Working Papers title is plain text and the abstract ends with "*Draft available upon request.*" The owner's Finder rename of that file to `/kyungtae-lee-workingpaper.pdf` was considered and dropped the same day, before any push | The owner judged the December 2025 draft not ready to circulate and plans to revise it and post the new draft as a working paper. The file was reachable at `/kyungtae-lee-jmp.pdf` from 2026-08-26 until this deploy and stays in git history (committed 2026-08-26); nothing on the site links to it now. When the revised draft arrives: `/new-paper` step 2 (place it under `static/`, add `link`, delete the note line). "Draft" rather than "Manuscript" because that is the usual word for an economics working paper; the owner can flip it. Supersedes the 2026-09-14 plan to move the file to `/clean-energy-access-home-production.pdf`. |
 | 2026-10-23 | The JMP abstract on `/research/` is now the abstract of the October 21, 2026 PDF, transcribed verbatim (180 words), replacing the three-sentence September 2026 CV blurb | Owner decision. Every other entry with an abstract carries its paper's own abstract, and the PDF is now one click away, so the two should agree. The CV's blurb lags until the next `/update-cv`. Transcribed with `pdftotext` from page 1 and compared word for word; do not paraphrase it. |
 | 2026-10-23 | Every abstract on `/research/` starts **folded behind a "+ Abstract" toggle** placed **below the Presentations line**; "+" turns to "−" when open. Built with native `<details>`/`<summary>` in `layouts/research/list.html`, styled in `zz-site.css`. Short notes such as "Draft available upon request." now go in a new front-matter field `params.note`, shown under the coauthor line, outside the fold | Owner request: the abstracts (115 to 198 words) made the page long, and the owner wanted the abstract under the conference line for a cleaner entry. Applied to all four papers with abstracts so entries look alike; the owner approved "all folded" by choosing the proposal. `<details>` needs no JavaScript, works with keyboard and screen readers, and leaves the abstract text in the HTML for search engines. The note moved out of the abstract body so it does not vanish when folded. The `/new-paper` skill does not yet mention `params.note`; `.claude/skills` is write-protected in the sandbox, so the owner edits it if wanted. Supersedes the Clean Energy row above on how to retire the note: when the revised draft arrives, delete `params.note` from the front matter (there is no body line any more) and add `link`. |
+| 2026-10-30 | `static/kyungtae-lee-cv.pdf` is now the October 2026 CV (source: `Job_application/CV/cv_20260914.tex`). The JMP abstract on `/research/` **stays the paper's own abstract**; the CV carries the owner's shorter plain-language description (about 120 words) | Owner decision, reaffirming the 2026-10-23 abstract row: the title opens the paper, so the "Abstract" on the site should be the paper's. The two texts agree on every number (45 of 60 is 26 of 30 plus 19 of 30). The owner also approved dropping "three sources:" from the CV sentence, because the paper's body counts four components (Proposition 2, Terms I–IV) while its abstract lists three items and states no count. This deploy also removes the September CV's hyperlink to a Google Drive PDF, which the 2026-10-23 Clean Energy row overlooked when it said nothing on the site linked to the old draft. The Drive file itself stays reachable until the owner restricts it. |
+| 2026-10-30 | Hunter College Math Camp (Summer 2022) **stays on `/teaching/`** although the October 2026 CV dropped it. The CV-only AI Innovation Fund proposal stays off the site while under review | Owner decision on Math Camp: it left the CV only to hold the CV to three pages, so this difference is intended and should not be flagged in later CV reviews. The proposal is not a teaching resource visitors can use, and its outcome is pending. |
 
 ## 6. Open Questions
 
@@ -147,7 +149,7 @@ Status keys: ⬜ todo · 🔄 in progress · ✅ done
 - **Photo + CV PDF**: supplied and live — `assets/profile.jpg` (cropped/downscaled square;
   lives in `assets/`, not `static/`, because `hugo.yml`'s `profileMode.imageUrl` resolves
   through PaperMod's `resources.Get`, which reads from the assets pipeline that does the
-  resizing — do not move it to `static/`) and `static/kyungtae-lee-cv.pdf` (September 2026). ✓
+  resizing — do not move it to `static/`) and `static/kyungtae-lee-cv.pdf` (October 2026). ✓
 - **Email** `kyungtae.lee79@gc.cuny.edu` — switched from `klee5@gradcenter.cuny.edu` on
   2026-09-14 at the owner's request, matching the September 2026 CV. ✓
 - **ORCID** `0009-0009-4661-9638` — confirmed correct by user 2026-06-29. ✓
