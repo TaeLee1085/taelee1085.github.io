@@ -64,11 +64,11 @@ const EXPLAIN = {
     1: `<b>High outcome nonlinearity.</b> The paper's "step" design: the part of the outcome that depends directly on X jumps when X passes zero.` },
   segL: { 0: `<b>Low treatment effect nonlinearity.</b> The true effect is the linear approximation of the effect calibrated to Card.`,
     1: `<b>High treatment effect nonlinearity.</b> The true effect is the full nonlinear effect calibrated to Card.` },
-  segD: { 0: `<b>No difference.</b> People are split into sample and target at random, so both have the same mix of X.`,
-    1: `<b>Strong difference.</b> People with larger X are more likely to be in the target, so the target's mix of X differs from the sample's.` },
-  segT: { 0: `<b>No difference.</b> People are split into sample and target at random, so both have the same mix of characteristics.`,
-    0.5: `<b>Moderate difference.</b> People with higher values of the characteristics are more likely to be in the target.`,
-    1: `<b>Strong difference.</b> People with higher values of the characteristics are even more likely to be in the target. This is the largest setting in the paper.` }
+  segD: { 0: `<b>No difference.</b> People are split into the sample and target populations at random, so both have the same mix of X.`,
+    1: `<b>Strong difference.</b> People with larger X are more likely to be in the target population, so its mix of X differs from the sample population's.` },
+  segT: { 0: `<b>No difference.</b> People are split into the sample and target populations at random, so both have the same mix of characteristics.`,
+    0.5: `<b>Moderate difference.</b> People with higher values of the characteristics are more likely to be in the target population.`,
+    1: `<b>Strong difference.</b> People with higher values of the characteristics are even more likely to be in the target population. This is the largest setting in the paper.` }
 };
 function segment(el, value, onPick, say) {
   el.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.v === String(value))));
@@ -173,8 +173,8 @@ function renderF() {
   const what = F.inst && F.out ? "instrument and outcome nonlinearity are both high"
     : F.inst ? "instrument nonlinearity is high" : "outcome nonlinearity is high";
   const lead = F.theta
-    ? "The target has more people with large X, so an error in the estimated slope carries into the prediction as Term II."
-    : "The sample and target have the same mix of people, so Term II is close to zero.";
+    ? "The target population has more people with large X, so an error in the estimated slope carries into the prediction as Term II."
+    : "The sample and target populations have the same mix of people, so Term II is close to zero.";
   let msg;
   if (!F.inst && !F.out) msg = `<p>${lead} With both nonlinearities low, ${name} is <b>${f3(a)}</b> for I2SLS and <b>${f3(b)}</b> for DML.</p><p>Now set one of them to high and watch ${name}.</p>`;
   else msg = `<p>${lead} When ${what}, ${name} for I2SLS moves from ${f3(base.I2SLS[k].v)} to <b>${f3(a)}</b>. For DML, it moves from ${f3(base.DML[k].v)} to <b>${f3(b)}</b>.</p>`;
@@ -186,12 +186,12 @@ function renderF() {
   if (F.scale === 10) { if (!F.theta) msg += `<p>Term IV, the weighting error, is about ${f0(a4)} for both methods. DML does not fix it. We come back to this in the next part.</p>`; }
   else if (Math.abs(b) > Math.abs(a)) msg += `<p>With a low spread, every term is small. Here DML does not do better, and its ${name} is slightly larger. I2SLS remains competitive at this scale.</p>`;
   document.getElementById("readF").innerHTML = msg;
-  document.getElementById("tableF").innerHTML = numbersTable(rows, `Difference between sample and target: ${F.theta ? "strong" : "none"}. Spread of X: ${F.scale === 10 ? "high (standard deviation 10)" : "low (standard deviation 1)"}. Instrument nonlinearity: ${F.inst ? `high (the paper's "cubic")` : `low (the paper's "linear")`}. Outcome nonlinearity: ${F.out ? `high (the paper's "step")` : `low (the paper's "linear")`}.`);
+  document.getElementById("tableF").innerHTML = numbersTable(rows, `Difference between sample and target populations: ${F.theta ? "strong" : "none"}. Spread of X: ${F.scale === 10 ? "high (standard deviation 10)" : "low (standard deviation 1)"}. Instrument nonlinearity: ${F.inst ? `high (the paper's "cubic")` : `low (the paper's "linear")`}. Outcome nonlinearity: ${F.out ? `high (the paper's "step")` : `low (the paper's "linear")`}.`);
 }
 renderF();
 {
   const kI = pick(DATA.t15, { kappa: 2, gamma: 0, theta: 1, method: "I2SLS" }), kD = pick(DATA.t15, { kappa: 2, gamma: 0, theta: 1, method: "DML" });
-  document.getElementById("alsoF").innerHTML = `<b>In the Card design, DML also removes the error from a nonlinear instrument.</b> When instrument nonlinearity is made stronger than in the Card calibration, with a linear true effect and a strong difference between sample and target, the average prediction error is ${f3(kI.bias)} for I2SLS and ${f3(kD.bias)} for DML.`;
+  document.getElementById("alsoF").innerHTML = `<b>In the Card design, DML also removes the error from a nonlinear instrument.</b> When instrument nonlinearity is made stronger than in the Card calibration, with a linear true effect and a strong difference between the sample and target populations, the average prediction error is ${f3(kI.bias)} for I2SLS and ${f3(kD.bias)} for DML.`;
 }
 
 /* ---------- what DML does not fix: Table 3 (Card design) ---------- */
@@ -209,13 +209,13 @@ function renderC() {
   document.getElementById("paramCate").hidden = !isCate;
   document.getElementById("paramW").hidden = isCate;
   document.getElementById("heldC").textContent = isCate
-    ? "Here the target differs strongly from the sample, and the instrument and outcome relationships stay as calibrated to the Card data."
+    ? "Here the target population differs strongly from the sample population, and the instrument and outcome relationships stay as calibrated to the Card data."
     : "Here the true effect is the nonlinear one, and the instrument and outcome relationships stay as calibrated to the Card data.";
   const ctl = document.getElementById("ctlC");
   if (ctlTab !== C.tab) {
     ctl.innerHTML = isCate
       ? `<div class="ctl"><span class="name">Treatment effect nonlinearity</span><div class="seg" role="group" aria-label="Treatment effect nonlinearity" id="segL"><button type="button" data-v="0">low</button><button type="button" data-v="1">high</button></div></div>`
-      : `<div class="ctl"><span class="name">Difference between sample and target</span><div class="seg" role="group" aria-label="Difference between sample and target" id="segT"><button type="button" data-v="0">none</button><button type="button" data-v="0.5">moderate</button><button type="button" data-v="1">strong</button></div></div>`;
+      : `<div class="ctl"><span class="name">Difference between sample and target populations</span><div class="seg" role="group" aria-label="Difference between sample and target populations" id="segT"><button type="button" data-v="0">none</button><button type="button" data-v="0.5">moderate</button><button type="button" data-v="1">strong</button></div></div>`;
     sayC.innerHTML = HINT;
   }
   ctlTab = C.tab;
@@ -233,12 +233,12 @@ function renderC() {
   } else {
     const iv = [0, 0.5, 1].map(th => vals(t3("DML", 1, th))[3]);
     const iv2 = [0, 0.5, 1].map(th => vals(t3("I2SLS", 1, th))[3]);
-    msg = `<p>As the target moves away from the sample, Term IV grows in size for both methods. For DML it goes ${iv.map(f3).join(" → ")}, and for I2SLS it goes ${iv2.map(f3).join(" → ")}.</p>`;
+    msg = `<p>As the target population moves away from the sample population, Term IV grows in size for both methods. For DML it goes ${iv.map(f3).join(" → ")}, and for I2SLS it goes ${iv2.map(f3).join(" → ")}.</p>`;
     if (C.theta > 0) msg += `<p>For DML, Term I (${f3(d[0])}) and Term IV (${f3(d[3])}) have opposite signs, so its total error is only ${f3(d[4])}. The total falls even though the weighting error grows.</p>`;
-    else msg += `<p>Now make the target different from the sample and watch Term IV.</p>`;
+    else msg += `<p>Now make the target population different from the sample population and watch Term IV.</p>`;
   }
   document.getElementById("readC").innerHTML = msg;
-  document.getElementById("tableC").innerHTML = numbersTable(rows, `Treatment effect nonlinearity: ${C.lam ? "high (the full effect calibrated to Card)" : "low (its linear approximation)"}. Difference between sample and target: ${C.theta === 0 ? "none" : C.theta === 0.5 ? "moderate" : "strong"}.`);
+  document.getElementById("tableC").innerHTML = numbersTable(rows, `Treatment effect nonlinearity: ${C.lam ? "high (the full effect calibrated to Card)" : "low (its linear approximation)"}. Difference between sample and target populations: ${C.theta === 0 ? "none" : C.theta === 0.5 ? "moderate" : "strong"}.`);
 }
 document.getElementById("tabCate").addEventListener("click", () => { C.tab = "cate"; renderC(); });
 document.getElementById("tabW").addEventListener("click", () => { C.tab = "w"; renderC(); });
