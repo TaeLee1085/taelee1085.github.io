@@ -41,17 +41,20 @@
 
   <section class="claim" aria-labelledby="h-fix">
     <h2 id="h-fix">What DML fixes</h2>
-    <p>Characteristics relate to the outcome, the treatment and the instrument. I2SLS controls for these relationships with linear terms, while DML estimates them flexibly. When they are nonlinear, the linear terms in I2SLS can push Term I away from zero. This figure varies the instrument and outcome relationships.</p>
+    <p>Characteristics relate to the outcome, the treatment and the instrument. I2SLS controls for these relationships with linear terms, while DML estimates them flexibly. When they are nonlinear, the linear terms in I2SLS can distort the estimated effect. The error shows up in Term I and, when the target differs from the sample, in Term II. This figure varies the instrument and outcome relationships and the difference between sample and target.</p>
     <div class="param">
       <ul>
         <li>This part uses the <b>simple design</b>, where people differ in one characteristic, <b>X</b>.</li>
+        <li><b>Difference between sample and target</b> is how different the target's mix of X is from the sample's.</li>
         <li><b>Spread of X</b> is how much people differ in X.</li>
         <li><b>Instrument nonlinearity</b> is how nonlinear the chance of getting the instrument is in X. That chance follows an S-shaped (logistic) curve.</li>
         <li><b>Outcome nonlinearity</b> is how nonlinear the direct link from X to the outcome is, apart from the treatment effect. The true effect is the same at both levels.</li>
       </ul>
     </div>
-    <p class="held">In this figure, the sample and target have the same mix of people, so Term II is close to zero. The true effect is linear, so Term III is zero.</p>
+    <p class="held">In this figure the true effect is linear, so Term III is zero.</p>
     <div class="controls">
+      <div class="ctl"><span class="name">Difference between sample and target</span><div class="seg" role="group" aria-label="Difference between sample and target" id="segD">
+        <button type="button" data-v="0">none</button><button type="button" data-v="1">strong</button></div></div>
       <div class="ctl"><span class="name">Spread of X</span><div class="seg" role="group" aria-label="Spread of X" id="segS">
         <button type="button" data-v="1">low</button><button type="button" data-v="10">high</button></div></div>
       <div class="ctl"><span class="name">Instrument nonlinearity</span><div class="seg" role="group" aria-label="Instrument nonlinearity" id="segI">
@@ -60,12 +63,12 @@
         <button type="button" data-v="0">low</button><button type="button" data-v="1">high</button></div></div>
     </div>
     <p class="explain" id="sayF" aria-live="polite"></p>
-    <div class="legend"><span><span class="sw" style="background:var(--i2sls)"></span><b>I2SLS</b></span><span><span class="sw" style="background:var(--dml)"></span><b>DML</b></span><span>A bar above zero means the prediction is too high, and a bar below zero means it is too low. The vertical scale changes with the spread of X.</span></div>
+    <div class="legend"><span><span class="sw" style="background:var(--i2sls)"></span><b>I2SLS</b></span><span><span class="sw" style="background:var(--dml)"></span><b>DML</b></span><span>A bar above zero means the prediction is too high, and a bar below zero means it is too low. The vertical scale changes with the spread of X and the difference between sample and target.</span></div>
     <div class="chart" id="chartF"></div>
     <div class="readout" id="readF" aria-live="polite"></div>
     <details class="numbers"><summary>Show the numbers</summary><div class="tablewrap" id="tableF"></div></details>
     <p class="also" id="alsoF"></p>
-    <p class="source">Numbers come from Table 2 of the paper (simple design, same mix of people in sample and target). The Card note is from Table 15. Hover over or tap a bar to see its Monte Carlo standard error.</p>
+    <p class="source">Numbers come from Table 2 of the paper (simple design). The Card note is from Table 15. Hover over or tap a bar to see its Monte Carlo standard error.</p>
   </section>
 
   <section class="claim" aria-labelledby="h-nofix">

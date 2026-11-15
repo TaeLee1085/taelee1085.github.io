@@ -64,6 +64,8 @@ const EXPLAIN = {
     1: `<b>High outcome nonlinearity.</b> The paper's "step" design: the part of the outcome that depends directly on X jumps when X passes zero.` },
   segL: { 0: `<b>Low treatment effect nonlinearity.</b> The true effect is the linear approximation of the effect calibrated to Card.`,
     1: `<b>High treatment effect nonlinearity.</b> The true effect is the full nonlinear effect calibrated to Card.` },
+  segD: { 0: `<b>No difference.</b> People are split into sample and target at random, so both have the same mix of X.`,
+    1: `<b>Strong difference.</b> People with larger X are more likely to be in the target, so the target's mix of X differs from the sample's.` },
   segT: { 0: `<b>No difference.</b> People are split into sample and target at random, so both have the same mix of characteristics.`,
     0.5: `<b>Moderate difference.</b> People with higher values of the characteristics are more likely to be in the target.`,
     1: `<b>Strong difference.</b> People with higher values of the characteristics are even more likely to be in the target. This is the largest setting in the paper.` }
@@ -146,56 +148,68 @@ function numbersTable(rows, note) {
   return tb + `</tbody></table><p class="source">Monte Carlo standard errors are in parentheses. ${note}</p>`;
 }
 
-/* ---------- what DML fixes: Table 2 (simple design, same mix of people in sample and target) ---------- */
+/* ---------- what DML fixes: Table 2 (simple design; no or strong difference between sample and target) ---------- */
 const INST = ["linear", "cubic"], OUTC = ["linear", "step"];
-const F = { scale: 10, inst: 1, out: 1 };
-const DOM_F = { 1: [-0.25, 0.3], 10: [-32, 12] };
-const t2 = (mt, s, i, o) => pick(DATA.t2, { method: mt, scale: s, inst: INST[i], outcome: OUTC[o], theta: 0 });
+// Opens on a prediction problem: the target differs from the sample (owner, 2026-11-14).
+const F = { scale: 10, inst: 0, out: 1, theta: 1 };
+// Vertical scale per spread and difference, kept fixed across the nonlinearity buttons so bars compare.
+const DOM_F = { "1|0": [-0.25, 0.3], "1|1": [-1, 1.7], "10|0": [-32, 12], "10|1": [-15, 110] };
+const t2 = (mt, s, i, o, d) => pick(DATA.t2, { method: mt, scale: s, inst: INST[i], outcome: OUTC[o], theta: d });
 const chartF = termChart(document.getElementById("chartF"), "Prediction error by term for I2SLS and DML in the simple design");
 const sayF = document.getElementById("sayF");
 sayF.innerHTML = HINT;
 function renderF() {
+  segment(document.getElementById("segD"), F.theta, v => { F.theta = v; renderF(); }, sayF);
   segment(document.getElementById("segS"), F.scale, v => { F.scale = v; renderF(); }, sayF);
   segment(document.getElementById("segI"), F.inst, v => { F.inst = v; renderF(); }, sayF);
   segment(document.getElementById("segO"), F.out, v => { F.out = v; renderF(); }, sayF);
-  const rows = { I2SLS: cells(t2("I2SLS", F.scale, F.inst, F.out)), DML: cells(t2("DML", F.scale, F.inst, F.out)) };
-  chartF.set(rows, [0], DOM_F[F.scale]);
-  const base = { I2SLS: cells(t2("I2SLS", F.scale, 0, 0)), DML: cells(t2("DML", F.scale, 0, 0)) };
-  const a = rows.I2SLS[0].v, b = rows.DML[0].v, a4 = rows.I2SLS[3].v, b4 = rows.DML[3].v, aT = rows.I2SLS[4].v, bT = rows.DML[4].v;
+  const row = (mt, i, o) => cells(t2(mt, F.scale, i, o, F.theta));
+  const rows = { I2SLS: row("I2SLS", F.inst, F.out), DML: row("DML", F.inst, F.out) };
+  // The term the nonlinearity moves: Term I with no difference, Term II when the target differs.
+  const k = F.theta ? 1 : 0, name = TERMS[k].k;
+  chartF.set(rows, F.theta ? [0, 1] : [0], DOM_F[`${F.scale}|${F.theta}`]);
+  const base = { I2SLS: row("I2SLS", 0, 0), DML: row("DML", 0, 0) };
+  const a = rows.I2SLS[k].v, b = rows.DML[k].v, a4 = rows.I2SLS[3].v, aT = rows.I2SLS[4].v, bT = rows.DML[4].v;
   const what = F.inst && F.out ? "instrument and outcome nonlinearity are both high"
     : F.inst ? "instrument nonlinearity is high" : "outcome nonlinearity is high";
+  const lead = F.theta
+    ? "The target has more people with large X, so an error in the estimated slope carries into the prediction as Term II."
+    : "The sample and target have the same mix of people, so Term II is close to zero.";
   let msg;
-  if (!F.inst && !F.out) msg = `<p>Instrument and outcome nonlinearity are both low. Term I is <b>${f3(a)}</b> for I2SLS and <b>${f3(b)}</b> for DML.</p><p>Now set one of them to high and watch Term I.</p>`;
-  else msg = `<p>When ${what}, Term I for I2SLS moves from ${f3(base.I2SLS[0].v)} to <b>${f3(a)}</b>. For DML, it moves from ${f3(base.DML[0].v)} to <b>${f3(b)}</b>.</p>`;
+  if (!F.inst && !F.out) msg = `<p>${lead} With both nonlinearities low, ${name} is <b>${f3(a)}</b> for I2SLS and <b>${f3(b)}</b> for DML.</p><p>Now set one of them to high and watch ${name}.</p>`;
+  else msg = `<p>${lead} When ${what}, ${name} for I2SLS moves from ${f3(base.I2SLS[k].v)} to <b>${f3(a)}</b>. For DML, it moves from ${f3(base.DML[k].v)} to <b>${f3(b)}</b>.</p>`;
   if (Math.abs(aT) < Math.abs(bT) && Math.sign(a) !== Math.sign(a4) && Math.abs(a) > Math.abs(b))
-    msg += `<p>The total error of I2SLS (${f3(aT)}) is smaller in size than that of DML (${f3(bT)}). But this is only because its Term I (${f3(a)}) and Term IV (${f3(a4)}) have opposite signs and partly cancel.</p>`;
-  if (F.scale === 10) msg += `<p>Term IV, the weighting error, is about ${f0(a4)} for both methods. DML does not fix it. We come back to this in the next part.</p>`;
-  else if (Math.abs(b) > Math.abs(a)) msg += `<p>With a low spread, every term is small. Here DML does not do better, and its Term I is slightly larger. I2SLS remains competitive at this scale.</p>`;
+    msg += `<p>The total error of I2SLS (${f3(aT)}) is smaller in size than that of DML (${f3(bT)}). But this is only because its ${name} (${f3(a)}) and Term IV (${f3(a4)}) have opposite signs and partly cancel.</p>`;
+  if (F.theta && Math.abs(bT) < Math.abs(aT)) msg += `<p>The total error is <b>${f3(aT)}</b> for I2SLS and <b>${f3(bT)}</b> for DML.</p>`;
+  const sA = rows.I2SLS[4].se, sB = rows.DML[4].se;
+  if (sA > 5 * sB) msg += `<p>I2SLS's error also swings widely from one simulated data set to the next. The Monte Carlo standard error of its total is ${sA.toFixed(3)}, against ${sB.toFixed(3)} for DML, so these averages for I2SLS are imprecisely estimated.</p>`;
+  if (F.scale === 10) { if (!F.theta) msg += `<p>Term IV, the weighting error, is about ${f0(a4)} for both methods. DML does not fix it. We come back to this in the next part.</p>`; }
+  else if (Math.abs(b) > Math.abs(a)) msg += `<p>With a low spread, every term is small. Here DML does not do better, and its ${name} is slightly larger. I2SLS remains competitive at this scale.</p>`;
   document.getElementById("readF").innerHTML = msg;
-  document.getElementById("tableF").innerHTML = numbersTable(rows, `Spread of X: ${F.scale === 10 ? "high (standard deviation 10)" : "low (standard deviation 1)"}. Instrument nonlinearity: ${F.inst ? `high (the paper's "cubic")` : `low (the paper's "linear")`}. Outcome nonlinearity: ${F.out ? `high (the paper's "step")` : `low (the paper's "linear")`}.`);
+  document.getElementById("tableF").innerHTML = numbersTable(rows, `Difference between sample and target: ${F.theta ? "strong" : "none"}. Spread of X: ${F.scale === 10 ? "high (standard deviation 10)" : "low (standard deviation 1)"}. Instrument nonlinearity: ${F.inst ? `high (the paper's "cubic")` : `low (the paper's "linear")`}. Outcome nonlinearity: ${F.out ? `high (the paper's "step")` : `low (the paper's "linear")`}.`);
 }
 renderF();
 {
-  const kI = pick(DATA.t15, { kappa: 2, gamma: 0, theta: 0, method: "I2SLS" }), kD = pick(DATA.t15, { kappa: 2, gamma: 0, theta: 0, method: "DML" });
-  document.getElementById("alsoF").innerHTML = `<b>The Card design shows the same pattern.</b> When instrument nonlinearity is made stronger than in the Card calibration, with a linear true effect and the same mix of people, the average prediction error is ${f3(kI.bias)} for I2SLS and ${f3(kD.bias)} for DML.`;
+  const kI = pick(DATA.t15, { kappa: 2, gamma: 0, theta: 1, method: "I2SLS" }), kD = pick(DATA.t15, { kappa: 2, gamma: 0, theta: 1, method: "DML" });
+  document.getElementById("alsoF").innerHTML = `<b>In the Card design, DML also removes the error from a nonlinear instrument.</b> When instrument nonlinearity is made stronger than in the Card calibration, with a linear true effect and a strong difference between sample and target, the average prediction error is ${f3(kI.bias)} for I2SLS and ${f3(kD.bias)} for DML.`;
 }
 
 /* ---------- what DML does not fix: Table 3 (Card design) ---------- */
 const t3 = (mt, lam, th) => pick(DATA.t3, { method: mt, lam: lam, theta: th });
-const C = { tab: "cate", lam: 1, theta: 0 };
+const C = { tab: "cate", lam: 1, theta: 1 }; // opens with the target strongly different from the sample
 const chartC = termChart(document.getElementById("chartC"), "Prediction error by term for I2SLS and DML in the Card design");
 const DOM_C = [-0.15, 0.8];
 let ctlTab = null; // the tab the buttons were built for; rebuilt only on a tab change so a pressed button keeps focus
 const sayC = document.getElementById("sayC");
 function renderC() {
   const isCate = C.tab === "cate";
-  if (isCate) C.theta = 0; else C.lam = 1;
+  if (isCate) C.theta = 1; else C.lam = 1;
   document.getElementById("tabCate").setAttribute("aria-pressed", String(isCate));
   document.getElementById("tabW").setAttribute("aria-pressed", String(!isCate));
   document.getElementById("paramCate").hidden = !isCate;
   document.getElementById("paramW").hidden = isCate;
   document.getElementById("heldC").textContent = isCate
-    ? "Here the sample and target have the same mix of people, and the instrument and outcome relationships stay as calibrated to the Card data."
+    ? "Here the target differs strongly from the sample, and the instrument and outcome relationships stay as calibrated to the Card data."
     : "Here the true effect is the nonlinear one, and the instrument and outcome relationships stay as calibrated to the Card data.";
   const ctl = document.getElementById("ctlC");
   if (ctlTab !== C.tab) {
@@ -208,14 +222,14 @@ function renderC() {
   if (isCate) segment(document.getElementById("segL"), C.lam, v => { C.lam = v; renderC(); }, sayC);
   else segment(document.getElementById("segT"), C.theta, v => { C.theta = v; renderC(); }, sayC);
   const rows = { I2SLS: cells(t3("I2SLS", C.lam, C.theta)), DML: cells(t3("DML", C.lam, C.theta)) };
-  chartC.set(rows, isCate ? [0] : [3], DOM_C);
+  chartC.set(rows, isCate ? [0, 2] : [3], DOM_C);
   const d = rows.DML.map(c => c.v);
   let msg;
   if (isCate) {
-    const other = vals(t3("DML", 1 - C.lam, 0))[0];
+    const other = vals(t3("DML", 1 - C.lam, C.theta))[0], c = rows.I2SLS[2].v;
     msg = C.lam === 0
-      ? `<p>With low treatment effect nonlinearity, Term I for DML is only <b>${f3(d[0])}</b>, and its total error is ${f3(d[4])}.</p><p>Now set it to high and watch Term I.</p>`
-      : `<p>With high treatment effect nonlinearity, Term I for DML rises from ${f3(other)} to <b>${f3(d[0])}</b>, and its total error becomes ${f3(d[4])}. Flexible estimates of the other relationships do not fix a linear model of the effect.</p>`;
+      ? `<p>With low treatment effect nonlinearity, Term I for DML is only <b>${f3(d[0])}</b>, and its total error is ${f3(d[4])}.</p><p>Now set it to high and watch Term I and Term III.</p>`
+      : `<p>With high treatment effect nonlinearity, Term I for DML rises from ${f3(other)} to <b>${f3(d[0])}</b>, and its total error becomes ${f3(d[4])}.${Math.sign(d[3]) !== Math.sign(d[0]) ? ` It stays small only because Term IV (${f3(d[3])}) has the opposite sign and offsets Term I.` : ""} Term III, the curve error, is ${f3(c)} for I2SLS and ${f3(d[2])} for DML. Flexible estimates of the other relationships do not fix a linear model of the effect.</p>`;
   } else {
     const iv = [0, 0.5, 1].map(th => vals(t3("DML", 1, th))[3]);
     const iv2 = [0, 0.5, 1].map(th => vals(t3("I2SLS", 1, th))[3]);

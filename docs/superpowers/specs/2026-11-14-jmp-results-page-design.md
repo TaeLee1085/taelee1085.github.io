@@ -122,6 +122,11 @@ save porting work.
   outcome, treatment and instrument (p. 20); the Card tabs say the instrument and outcome stay
   as calibrated (Table 3 notes); "DML's flexibility does not help with this error" replaces
   "DML has no advantage here".
+- After the owner tried the live page: every figure shows a target that differs from the
+  sample. The first version held the first figure at no difference (ϑ = 0), which removed the
+  external-validity problem the paper is about. The first figure gained a "none / strong"
+  control (Table 2's ϑ = 0 and 1) and opens at a strong difference; the Card treatment-effect
+  tab is fixed at a strong difference; the weights tab and the Card note use it too.
 - A value label that a neighbouring bar partly covered (I2SLS total, −16.769, on the opening
   scene) is drawn on top of the bars with a white halo.
 - Accessibility: grey text darkened to 5.0:1, toggle buttons instead of half-built tabs, focus
