@@ -42,6 +42,12 @@
         {{- with $p.Params.note }}
     <p class="paper-note">{{ . }}</p>
         {{- end }}
+        {{- /* Optional button to a page of interactive figures (params.interactive, a
+               site-relative URL). Sits under the coauthor line so it shows without
+               opening the abstract. */}}
+        {{- with $p.Params.interactive }}
+    <p class="paper-interactive"><a class="paper-button" href="{{ . }}"><span aria-hidden="true">▶&#xFE0E;</span> Interactive results</a></p>
+        {{- end }}
         {{- with $p.Params.presentations }}
     <p class="paper-presentations"><span class="paper-label">Presentations:</span> {{ delimit . " &middot; " | safeHTML }}</p>
         {{- end }}

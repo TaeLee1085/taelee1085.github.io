@@ -1,0 +1,10 @@
+{{- /* Overrides PaperMod's empty extend_head.html. Adds the interactive results page's own
+       stylesheet on that page only (layout "jmp-results"); every other page is unchanged. */ -}}
+{{- if eq .Layout "jmp-results" }}
+  {{- with resources.Get "css/jmp-results.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}">
+  {{- end }}
+{{- /* Without JavaScript the charts, readouts and number tables are never drawn, so hide
+       the controls and empty boxes; the page's <noscript> line says why. */}}
+<noscript><style>.jmpx .controls,.jmpx .explain,.jmpx .tabs,.jmpx .legend,.jmpx .chart,.jmpx .readout,.jmpx details.numbers,.jmpx .also,.jmpx .held:empty{display:none}</style></noscript>
+{{- end }}

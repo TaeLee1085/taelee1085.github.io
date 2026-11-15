@@ -1,0 +1,109 @@
+{{- define "main" }}
+{{- /* Interactive results for the job market paper. Page markup is the reviewed v5 sample
+       (spec docs/superpowers/specs/2026-11-14-jmp-results-page-design.md). Numbers come from
+       data/jmp_results.json; styles from assets/css/jmp-results.css, loaded only here via
+       _partials/extend_head.html. The script is a module so its top-level names cannot
+       collide with the theme's inline footer scripts. */}}
+<div class="jmpx">
+  <div class="jmpx-head">
+    <p class="eyebrow">Job market paper · with Alexander Kwon · November 2026 draft</p>
+    <h1>From One LATE to Another</h1>
+    <p class="subtitle">Machine Learning and the External Validity of IV Estimates</p>
+    <a class="pdf" href="/kyungtae-lee-jmp.pdf">Read the paper (PDF) <span aria-hidden="true">↗&#xFE0E;</span></a>
+  </div>
+  <noscript><p class="jmpx-noscript">The figures and number tables on this page need JavaScript.</p></noscript>
+
+  <section class="basics" aria-labelledby="h-basics">
+    <h2 id="h-basics">The question</h2>
+    <p>An instrumental variable (IV) study estimates a local average treatment effect (LATE) for one population. We call it the <b>sample</b>. We want to predict the LATE in another population, the <b>target</b>, where we only observe people's characteristics. The <b>prediction error</b> is the prediction minus the true value. Zero means a perfect prediction.</p>
+    <dl class="defs">
+      <div class="def"><dt><span class="sw" style="background:var(--i2sls)"></span>I2SLS</dt><dd>Interacted two-stage least squares, the standard approach. It controls for characteristics with linear terms.</dd></div>
+      <div class="def"><dt><span class="sw" style="background:var(--dml)"></span>DML</dt><dd>Double/debiased machine learning. It uses machine learning to estimate how characteristics relate to the outcome, the treatment and the instrument, so these relationships do not have to be linear.</dd></div>
+    </dl>
+    <p class="small" style="margin-top:12px">Notice that both methods still model the treatment effect as linear in characteristics.</p>
+
+    <h3 style="margin-top:22px">Where the prediction error comes from</h3>
+    <p>We split the prediction error into four terms that add up to the total. The terms can have opposite signs, so they can partly cancel.</p>
+    <div class="terms">
+      <div><b>Term I · Sample error</b>The estimate is already off in the sample itself.</div>
+      <div><b>Term II · Slope error</b>The estimated slope of the effect is off. Because the target has different characteristics, this error carries into the prediction.</div>
+      <div><b>Term III · Curve error</b>The true effect is nonlinear, but the model is linear. This matters when the two populations differ.</div>
+      <div><b>Term IV · Weighting error</b>The weights that tell us who in the target responds to the instrument are estimated with error.</div>
+    </div>
+
+    <h3 style="margin-top:22px">Two simulations</h3>
+    <p>We simulate the data, so we know the true LATE and can measure each method's error.</p>
+    <div class="beds">
+      <div><b>Simple design</b>People differ in one characteristic. We set each relationship ourselves, so we can make it nonlinear on purpose. Each setting is repeated 500 times with 10,000 people.</div>
+      <div><b>Card design</b>Calibrated to Card (1995), a classic study of the return to schooling that uses living near a college as the instrument. Each setting is repeated 300 times with 18,000 people.</div>
+    </div>
+  </section>
+
+  <section class="claim" aria-labelledby="h-fix">
+    <h2 id="h-fix">What DML fixes</h2>
+    <p>Characteristics relate to the outcome, the treatment and the instrument. I2SLS controls for these relationships with linear terms, while DML estimates them flexibly. When they are nonlinear, the linear terms in I2SLS can push Term I away from zero. This figure varies the instrument and outcome relationships.</p>
+    <div class="param">
+      <ul>
+        <li>This part uses the <b>simple design</b>, where people differ in one characteristic, <b>X</b>.</li>
+        <li><b>Spread of X</b> is how much people differ in X.</li>
+        <li><b>Instrument nonlinearity</b> is how nonlinear the chance of getting the instrument is in X. That chance follows an S-shaped (logistic) curve.</li>
+        <li><b>Outcome nonlinearity</b> is how nonlinear the direct link from X to the outcome is, apart from the treatment effect. The true effect is the same at both levels.</li>
+      </ul>
+    </div>
+    <p class="held">In this figure, the sample and target have the same mix of people, so Term II is close to zero. The true effect is linear, so Term III is zero.</p>
+    <div class="controls">
+      <div class="ctl"><span class="name">Spread of X</span><div class="seg" role="group" aria-label="Spread of X" id="segS">
+        <button type="button" data-v="1">low</button><button type="button" data-v="10">high</button></div></div>
+      <div class="ctl"><span class="name">Instrument nonlinearity</span><div class="seg" role="group" aria-label="Instrument nonlinearity" id="segI">
+        <button type="button" data-v="0">low</button><button type="button" data-v="1">high</button></div></div>
+      <div class="ctl"><span class="name">Outcome nonlinearity</span><div class="seg" role="group" aria-label="Outcome nonlinearity" id="segO">
+        <button type="button" data-v="0">low</button><button type="button" data-v="1">high</button></div></div>
+    </div>
+    <p class="explain" id="sayF" aria-live="polite"></p>
+    <div class="legend"><span><span class="sw" style="background:var(--i2sls)"></span><b>I2SLS</b></span><span><span class="sw" style="background:var(--dml)"></span><b>DML</b></span><span>A bar above zero means the prediction is too high, and a bar below zero means it is too low. The vertical scale changes with the spread of X.</span></div>
+    <div class="chart" id="chartF"></div>
+    <div class="readout" id="readF" aria-live="polite"></div>
+    <details class="numbers"><summary>Show the numbers</summary><div class="tablewrap" id="tableF"></div></details>
+    <p class="also" id="alsoF"></p>
+    <p class="source">Numbers come from Table 2 of the paper (simple design, same mix of people in sample and target). The Card note is from Table 15. Hover over or tap a bar to see its Monte Carlo standard error.</p>
+  </section>
+
+  <section class="claim" aria-labelledby="h-nofix">
+    <h2 id="h-nofix">What DML does not fix</h2>
+    <p>Two sources of error remain for both methods. This part uses the Card design. Pick a tab, change the setting, and watch how each term moves.</p>
+    <div class="tabs" role="group" aria-label="Source of error">
+      <button type="button" id="tabCate" aria-pressed="true">A nonlinear treatment effect</button>
+      <button type="button" id="tabW" aria-pressed="false">Compliance weights</button>
+    </div>
+    <div class="param" id="paramCate">
+      <ul>
+        <li>The <b>treatment effect</b> can be nonlinear in characteristics. Both methods model it as linear, so DML's flexibility does not help with this error.</li>
+        <li><b>Treatment effect nonlinearity</b> is how nonlinear the true effect is. The average effect is the same at both levels.</li>
+      </ul>
+    </div>
+    <div class="param" id="paramW" hidden>
+      <ul>
+        <li><b>Compliance weights</b> tell us who in the target responds to the instrument. Both methods use the same estimated weights, so DML's flexibility does not help with this error.</li>
+        <li><b>Difference between sample and target</b> is how different the target's mix of characteristics is from the sample's.</li>
+      </ul>
+    </div>
+    <p class="held" id="heldC"></p>
+    <div class="controls" id="ctlC"></div>
+    <p class="explain" id="sayC" aria-live="polite"></p>
+    <div class="legend"><span><span class="sw" style="background:var(--i2sls)"></span><b>I2SLS</b></span><span><span class="sw" style="background:var(--dml)"></span><b>DML</b></span><span>A bar above zero means the prediction is too high, and a bar below zero means it is too low.</span></div>
+    <div class="chart" id="chartC"></div>
+    <div class="readout" id="readC" aria-live="polite"></div>
+    <details class="numbers"><summary>Show the numbers</summary><div class="tablewrap" id="tableC"></div></details>
+    <p class="source">Numbers come from Table 3 of the paper (Card design). Hover over or tap a bar to see its Monte Carlo standard error.</p>
+  </section>
+
+  <div class="jmpx-credit">
+    <p>I built this page with Claude Code, an AI coding assistant, from the November 13, 2026 draft. A script read every number from the paper's tables, and each row was checked against the totals in the paper.</p>
+  </div>
+  <div id="tip" hidden></div>
+  <script type="application/json" id="jmp-data">{{ site.Data.jmp_results | jsonify | safeJS }}</script>
+  {{- with resources.Get "js/jmp-results.js" | minify | fingerprint }}
+  <script type="module" src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}"></script>
+  {{- end }}
+</div>
+{{- end }}

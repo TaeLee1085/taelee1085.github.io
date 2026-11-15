@@ -116,3 +116,35 @@ details.paper-abstract[open] > summary::before {
         margin-bottom: 26px;
     }
 }
+
+/* "Interactive results" button on an entry with params.interactive (the JMP).
+   Outlined in the results page's DML blue. The text is a darker blue (#1d5fae, 6.4:1 on
+   white) because #2a78d6 text is 4.4:1 and fails WCAG AA at 15px. `.md-content a.paper-button`
+   (0-2-1) ties the theme's `.md-content a:not(.anchor)` (md-content.css, also 0-2-1); the tie is
+   broken by source order, since this stylesheet is concatenated after the theme's. */
+.md-content p.paper-interactive {
+    margin-top: 8px;
+}
+
+.md-content a.paper-button {
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: #1d5fae;
+    border: 1.5px solid #2a78d6;
+    border-radius: 999px;
+    padding: 3px 12px;
+    box-shadow: none;
+    text-decoration: none;
+}
+
+.md-content a.paper-button:hover,
+.md-content a.paper-button:focus-visible {
+    background: #eaf2fc;
+}
+
+.md-content a.paper-button:focus-visible {
+    outline: 2px solid #2a78d6;
+    outline-offset: 2px;
+}
